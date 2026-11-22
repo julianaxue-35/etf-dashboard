@@ -20,12 +20,17 @@ def summarize(divs, last_close, now):
     by_year = {}
     for d, a in clean:
         by_year[_d(d).year] = by_year.get(_d(d).year, 0.0) + a
+    full = [(y, v) for y, v in sorted(by_year.items()) if y < today.year]      # complete calendar years only
+    changes = [full[i][1] / full[i - 1][1] - 1 for i in range(1, len(full))
+               if full[i][0] == full[i - 1][0] + 1 and full[i - 1][1] > 0]
     last = clean[-1] if clean else None
     return {
         "ttm_amount": round(amount, 6),
         "ttm_yield": (amount / last_close) if last_close and last_close > 0 else None,
         "payments_ttm": n, "frequency": freq,
         "last_date": last[0][:10] if last else None, "last_amount": last[1] if last else None,
+        "worst_yoy_change": min(changes) if changes else None,
+        "years_cut": sum(1 for c in changes if c < 0),
         "recent": [{"date": d[:10], "amount": round(a, 4)} for d, a in clean[-6:]],
         "by_year": [{"year": y, "amount": round(v, 4)} for y, v in sorted(by_year.items())][-6:],
     }

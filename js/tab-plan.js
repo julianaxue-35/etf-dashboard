@@ -17,6 +17,7 @@ export function render(el, ctx) {
     <div class="sub" id="msg" role="alert"></div>
     <div class="chart"><canvas id="c1" role="img" aria-label="Balance growth at 6, 8 and 10 percent"></canvas></div>
     <div class="tablewrap"><table id="t1"></table></div>
+    <div class="sub">Returns are not guaranteed: shares can fall for years. See the Risk tab.</div>
     <details class="more"><summary>More</summary>Each line shows the balance if you add the monthly amount in the table at that yearly return. Returns are assumptions, not forecasts. Before tax. Contributions made at the end of each month.</details></div>
   <div class="card"><h2>One lump sum or spread over 12 months?</h2>
     <div class="row"><div><label for="pf">Fund</label><select id="pf">${funds.map(e => `<option value="${esc(e.ticker)}">${esc(e.ticker)}</option>`).join('')}</select></div>

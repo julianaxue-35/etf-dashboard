@@ -68,7 +68,7 @@ export function scatterChart(canvas, points, groups, bands) {
     const yr = y.getPixelForValue(bands.riskFree); ctx.strokeStyle = css('--bad'); ctx.setLineDash([6, 4]);
     ctx.beginPath(); ctx.moveTo(a.left, yr); ctx.lineTo(a.right, yr); ctx.stroke();
     ctx.setLineDash([]); ctx.font = '11px system-ui'; ctx.textAlign = 'right';
-    ctx.fillStyle = css('--bad'); ctx.fillText('6% no-risk rate', a.right - 6, yr + 13);
+    ctx.fillStyle = css('--bad'); ctx.fillText('6% savings (capital safe)', a.right - 6, yr + 13);
     ctx.fillStyle = css('--brand'); ctx.fillText('8–10% target', a.right - 6, y1 - 4); ctx.restore(); } };
   return mount(canvas, { type: 'scatter', plugins: [band],
     data: { datasets: groups.map((g, i) => ({ label: g, data: points.filter(p => p.group === g),

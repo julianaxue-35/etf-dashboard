@@ -25,9 +25,12 @@ def scenario_bands(returns, horizons_years, start=1.0, n=5000, seed=1, block=21)
         growth = np.prod(1.0 + r[idx], axis=1) * start
         ann = (growth / start) ** (1.0 / h) - 1.0
         out[h] = {
+            "p5": float(np.percentile(growth, 5)),
             "p10": float(np.percentile(growth, 10)),
             "p50": float(np.percentile(growth, 50)),
             "p90": float(np.percentile(growth, 90)),
+            "prob_loss": float(np.mean(growth < start)),
+            "prob_below_6": float(np.mean(ann < 0.06)),
             "prob_beat_6": float(np.mean(ann > 0.06)),
             "prob_reach_8": float(np.mean(ann >= 0.08)),
             "prob_reach_10": float(np.mean(ann >= 0.10)),

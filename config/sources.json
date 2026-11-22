@@ -118,5 +118,155 @@
    "transparent": "Based on the type of fund only; the real share changes each year.",
    "timely": "May be out of date. Check the fund's latest distribution statement."
   }
+ },
+ "rba": {
+  "id": "rba",
+  "name": "Reserve Bank of Australia",
+  "type": "regulator",
+  "url": "",
+  "scores": {
+   "primary": 30,
+   "independent": 20,
+   "transparent": 20,
+   "timely": 14
+  },
+  "reasons": {
+   "timely": "Media releases are published only at set times, so it can lag events."
+  }
+ },
+ "fed": {
+  "id": "fed",
+  "name": "US Federal Reserve",
+  "type": "regulator",
+  "url": "",
+  "scores": {
+   "primary": 30,
+   "independent": 20,
+   "transparent": 20,
+   "timely": 14
+  },
+  "reasons": {
+   "timely": "Releases are published at set times, so it can lag events."
+  }
+ },
+ "abc": {
+  "id": "abc",
+  "name": "ABC News (Business)",
+  "type": "news",
+  "url": "",
+  "scores": {
+   "primary": 12,
+   "independent": 17,
+   "transparent": 17,
+   "timely": 14
+  },
+  "reasons": {
+   "primary": "Reports on events rather than being the original source.",
+   "independent": "Publicly funded broadcaster with editorial standards, but still a news outlet.",
+   "transparent": "Has a corrections policy; headlines can simplify."
+  }
+ },
+ "guardian": {
+  "id": "guardian",
+  "name": "The Guardian (Business)",
+  "type": "news",
+  "url": "",
+  "scores": {
+   "primary": 12,
+   "independent": 16,
+   "transparent": 17,
+   "timely": 14
+  },
+  "reasons": {
+   "primary": "Reports on events rather than being the original source.",
+   "independent": "Independent owner with a stated editorial lean.",
+   "transparent": "Has a corrections policy; headlines can simplify."
+  }
+ },
+ "cnbc": {
+  "id": "cnbc",
+  "name": "CNBC (Top news)",
+  "type": "news",
+  "url": "",
+  "scores": {
+   "primary": 12,
+   "independent": 12,
+   "transparent": 15,
+   "timely": 14
+  },
+  "reasons": {
+   "primary": "Reports on events rather than being the original source.",
+   "independent": "Commercial outlet; mixes news with opinion and sponsored segments.",
+   "transparent": "Corrections are published but not prominent."
+  }
+ },
+ "google_market": {
+  "id": "google_market",
+  "name": "Google News: market falls",
+  "type": "aggregator",
+  "url": "",
+  "scores": {
+   "primary": 8,
+   "independent": 10,
+   "transparent": 8,
+   "timely": 14
+  },
+  "reasons": {
+   "primary": "A search results page: the original outlet behind each headline is not checked.",
+   "independent": "Ranking is automatic and can surface weak or sponsored sites.",
+   "transparent": "No editorial standards apply to what appears."
+  }
+ },
+ "google_ai": {
+  "id": "google_ai",
+  "name": "Google News: AI stocks",
+  "type": "aggregator",
+  "url": "",
+  "scores": {
+   "primary": 8,
+   "independent": 10,
+   "transparent": 8,
+   "timely": 14
+  },
+  "reasons": {
+   "primary": "A search results page: the original outlet behind each headline is not checked.",
+   "independent": "Ranking is automatic and can surface weak or sponsored sites.",
+   "transparent": "No editorial standards apply to what appears."
+  }
+ },
+ "google_asx": {
+  "id": "google_asx",
+  "name": "Google News: ASX",
+  "type": "aggregator",
+  "url": "",
+  "scores": {
+   "primary": 8,
+   "independent": 10,
+   "transparent": 8,
+   "timely": 14
+  },
+  "reasons": {
+   "primary": "A search results page: the original outlet behind each headline is not checked.",
+   "independent": "Ranking is automatic and can surface weak or sponsored sites.",
+   "transparent": "No editorial standards apply to what appears."
+  }
+ },
+ "search_summary": {
+  "id": "search_summary",
+  "name": "Public sources, read via search summaries",
+  "type": "aggregator",
+  "url": "",
+  "scores": {
+   "primary": 10,
+   "independent": 14,
+   "transparent": 12,
+   "timely": 12
+  },
+  "reasons": {
+   "primary": "Figures come from news and data sites, not the index provider.",
+   "independent": "A mix of media and data sites with different methods.",
+   "transparent": "Sources differ on exact figures (price vs total return, close vs intraday).",
+   "timely": "Historic events, so not time-sensitive."
+  }
  }
 }

@@ -1,0 +1,281 @@
+{
+ "topics": {
+  "selloff": {
+   "label": "Market falls",
+   "categories": [
+    "core",
+    "tech",
+    "healthcare",
+    "infrastructure"
+   ],
+   "keywords": [
+    "sell-off",
+    "selloff",
+    "plunge",
+    "plunges",
+    "tumble",
+    "tumbles",
+    "slump",
+    "slumps",
+    "crash",
+    "rout",
+    "correction",
+    "bear market",
+    "wipe out",
+    "wipes out",
+    "sinks",
+    "sink",
+    "worst day",
+    "worst week",
+    "circuit breaker"
+   ]
+  },
+  "us_market": {
+   "label": "US market",
+   "tickers": [
+    "IVV",
+    "VGS",
+    "NDQ",
+    "VDHG",
+    "TECH"
+   ],
+   "keywords": [
+    "Wall Street",
+    "S&P 500",
+    "Dow Jones",
+    "Nasdaq",
+    "US stocks",
+    "US shares",
+    "Treasury yield",
+    "tariff",
+    "tariffs"
+   ],
+   "case_sensitive": [
+    "Fed"
+   ]
+  },
+  "au_market": {
+   "label": "Australian market",
+   "tickers": [
+    "A200",
+    "VAS",
+    "VDHG",
+    "TCL",
+    "APA",
+    "MQG"
+   ],
+   "keywords": [
+    "ASX",
+    "S&P/ASX",
+    "Australian shares",
+    "Australian sharemarket",
+    "sharemarket",
+    "ASX 200",
+    "unemployment",
+    "Australian economy",
+    "recession"
+   ]
+  },
+  "rates": {
+   "label": "Interest rates & inflation",
+   "categories": [
+    "core",
+    "infrastructure"
+   ],
+   "keywords": [
+    "interest rate",
+    "interest rates",
+    "cash rate",
+    "rate cut",
+    "rate hike",
+    "rate rise",
+    "inflation",
+    "CPI",
+    "Reserve Bank",
+    "RBA",
+    "bond yield",
+    "bond yields",
+    "FOMC",
+    "monetary policy",
+    "Monetary Policy Board",
+    "Federal Open Market Committee"
+   ],
+   "case_sensitive": []
+  },
+  "tech_ai": {
+   "label": "Tech & AI",
+   "tickers": [
+    "NDQ",
+    "SEMI",
+    "RBTZ",
+    "TECH",
+    "IVV"
+   ],
+   "keywords": [
+    "artificial intelligence",
+    "Nvidia",
+    "semiconductor",
+    "semiconductors",
+    "chipmaker",
+    "chipmakers",
+    "OpenAI",
+    "data centre",
+    "data center",
+    "AI bubble",
+    "Microsoft",
+    "Apple",
+    "Alphabet",
+    "Meta Platforms",
+    "Broadcom",
+    "TSMC"
+   ],
+   "case_sensitive": [
+    "AI"
+   ]
+  },
+  "healthcare": {
+   "label": "Healthcare",
+   "tickers": [
+    "IXJ",
+    "HLTH",
+    "CSL",
+    "A200",
+    "VAS"
+   ],
+   "keywords": [
+    "CSL",
+    "pharmaceutical",
+    "pharma",
+    "FDA",
+    "vaccine",
+    "biotech",
+    "drugmaker",
+    "healthcare",
+    "PBS",
+    "Medicare"
+   ]
+  },
+  "infrastructure": {
+   "label": "Infrastructure",
+   "tickers": [
+    "IFRA",
+    "GLIN",
+    "TCL",
+    "APA"
+   ],
+   "keywords": [
+    "Transurban",
+    "APA Group",
+    "toll road",
+    "pipeline",
+    "infrastructure",
+    "utilities",
+    "airport",
+    "electricity prices",
+    "gas prices"
+   ]
+  },
+  "currency": {
+   "label": "Currency",
+   "tickers": [
+    "VGS",
+    "IVV",
+    "NDQ",
+    "IXJ",
+    "TECH"
+   ],
+   "keywords": [
+    "Australian dollar",
+    "US dollar",
+    "exchange rate",
+    "currency"
+   ]
+  }
+ },
+ "negative": [
+  "fall",
+  "falls",
+  "fell",
+  "drop",
+  "drops",
+  "plunge",
+  "plunges",
+  "tumble",
+  "slump",
+  "crash",
+  "rout",
+  "sell-off",
+  "selloff",
+  "fears",
+  "fear",
+  "worry",
+  "warns",
+  "warning",
+  "losses",
+  "loss",
+  "recession",
+  "worst",
+  "slide",
+  "slides",
+  "sinks",
+  "cut jobs",
+  "surge in unemployment"
+ ],
+ "positive": [
+  "rise",
+  "rises",
+  "rose",
+  "gain",
+  "gains",
+  "rally",
+  "rallies",
+  "record high",
+  "surge",
+  "surges",
+  "jumps",
+  "boost",
+  "beats",
+  "growth"
+ ],
+ "context": [
+  "stocks",
+  "stock",
+  "shares",
+  "sharemarket",
+  "market",
+  "markets",
+  "ASX",
+  "Wall Street",
+  "Nasdaq",
+  "S&P",
+  "Dow",
+  "index",
+  "ETF",
+  "ETFs",
+  "investors",
+  "investor",
+  "economy",
+  "economic",
+  "recession",
+  "unemployment",
+  "RBA",
+  "Reserve Bank",
+  "FOMC",
+  "monetary policy",
+  "interest rates",
+  "interest rate",
+  "rate hike",
+  "rate cut",
+  "yields",
+  "yield",
+  "earnings",
+  "dollar",
+  "bonds",
+  "IPO",
+  "chipmaker",
+  "chipmakers",
+  "semiconductor",
+  "semiconductors",
+  "bubble"
+ ]
+}

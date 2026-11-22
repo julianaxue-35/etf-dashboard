@@ -2,3 +2,4 @@ yfinance
 numpy
 pytest
 pyyaml
+defusedxml

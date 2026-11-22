@@ -110,3 +110,9 @@ def test_dividends_written_and_failure_tolerated(tmp_path):
     assert d["AAA"]["franking"]["score"] < 50 and d["AAA"]["franking"]["reasons"]
     assert "BBB" not in d
     assert sorted(json.loads((tmp_path / "meta.json").read_text())["failed"]) == []   # price data still fine
+
+def test_history_trust_entry_written(tmp_path):
+    etfs = [{"ticker": "AAA", "category": "core", "fee_pct": 0.1, "fee_check": "n/a"}]
+    fetch.run(FakeProvider({"AAA": series()}), etfs, tmp_path, NOW)
+    t = json.loads((tmp_path / "trust.json").read_text())["_history"]
+    assert 50 <= t["score"] < 100 and t["reasons"]

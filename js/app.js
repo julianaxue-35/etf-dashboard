@@ -4,10 +4,12 @@ import { checkPasscode, isStale, staleTickers, makeStore } from './core.js';
 const store = makeStore(window.localStorage || { getItem() { throw 0; }, setItem() { throw 0; } });
 const TABS = [
   { id: 'today', label: 'Today', mod: './tab-today.js' },
+  { id: 'news', label: 'News', mod: './tab-news.js' },
   { id: 'compare', label: 'Compare', mod: './tab-compare.js' },
   { id: 'dividends', label: 'Dividends', mod: './tab-dividends.js' },
   { id: 'scenarios', label: 'Scenarios', mod: './tab-scenarios.js' },
   { id: 'dips', label: 'Dips', mod: './tab-dips.js' },
+  { id: 'risk', label: 'Risk', mod: './tab-risk.js' },
   { id: 'aftertax', label: 'After-tax', mod: './tab-aftertax.js' },
   { id: 'plan', label: 'Plan', mod: './tab-plan.js' },
 ];
@@ -17,9 +19,11 @@ async function loadData() {
   const get = n => fetch(`data/${n}.json`, { cache: 'no-cache' }).then(r => r.json());
   const [prices, metrics, scenarios, meta, trust, dividends] = await Promise.all(
     ['prices', 'metrics', 'scenarios', 'meta', 'trust', 'dividends'].map(get));
+  const stress = await fetch('config/history_stress.json').then(r => r.json()).catch(() => []);
+  const news = await fetch('data/news.json', { cache: 'no-cache' }).then(r => r.json()).catch(() => null);
   const etfs = await fetch('config/etfs.json').then(r => r.json());
   const tax = await fetch('config/tax.json').then(r => r.json());
-  return { prices, metrics, scenarios, meta, trust, dividends, etfs, tax };
+  return { prices, metrics, scenarios, meta, trust, dividends, news, stress, etfs, tax };
 }
 
 async function show(ctx, id) {

@@ -1,0 +1,26 @@
+[
+ {
+  "id": "asx_gfc",
+  "label": "ASX 200: global financial crisis (Nov 2007 to Mar 2009)",
+  "fall": 0.54,
+  "fall_text": "about 54%",
+  "recovery_text": "about 11 to 12 years to get back to its 2007 level",
+  "note": "Price index; reinvested dividends shorten the wait. Sources differ slightly on exact dates.",
+  "urls": [
+   "https://www.thenewdaily.com.au/finance/finance-news/2019/07/30/asx-200-share-record-high",
+   "https://www.inkl.com/news/asx-200-beats-closing-record-figure-after-12-year-wait"
+  ]
+ },
+ {
+  "id": "nasdaq_dotcom",
+  "label": "Nasdaq: dot-com crash (Mar 2000 to Oct 2002)",
+  "fall": 0.78,
+  "fall_text": "roughly 74% to 83% (sources differ)",
+  "recovery_text": "about 15 years for the broad Nasdaq to get back to its 2000 high (price basis)",
+  "note": "No verified recovery date for the Nasdaq-100 specifically; the 15 years is the broader Nasdaq Composite.",
+  "urls": [
+   "https://dqydj.com/nasdaq-drawdown-history/",
+   "https://phys.org/news/2015-04-years-nasdaq-recoups-losses-dot-com.pdf"
+  ]
+ }
+]

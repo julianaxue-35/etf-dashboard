@@ -29,3 +29,14 @@ def test_limited_history():
 def test_one_year_history_allows_up_to_one_year():
     out = scenario_bands(_series(300, 0.0004), H, n=100)
     assert 1 in out and 3 not in out and out['limited_history'] is True
+
+
+def test_loss_probabilities_and_deep_bad_case():
+    down = scenario_bands([-0.0002] * 600, [1, 3], n=100)              # steady loser: always ends below the start
+    assert down[1]["prob_loss"] == 1.0 and down[1]["prob_below_6"] == 1.0
+    up = scenario_bands([0.0004] * 600, [1, 3], n=100)                 # steady winner: never loses
+    assert up[1]["prob_loss"] == 0.0
+    out = scenario_bands(_series(800, 0.0004), H, n=300)
+    for h in H:
+        assert out[h]["p5"] <= out[h]["p10"] <= out[h]["p50"]
+        assert 0.0 <= out[h]["prob_loss"] <= out[h]["prob_below_6"] <= 1.0

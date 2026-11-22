@@ -32,3 +32,20 @@ def test_history_years_and_window():
     assert math.isclose(history_years(d), 3.0, abs_tol=0.01)
     dd, pp = window(d, [1, 2, 3], 2.5)
     assert dd == ["2024-01-01", "2026-01-01"] and pp == [2, 3]
+
+
+from etf.metrics import rolling_summary, longest_underwater_days
+
+def test_rolling_summary():
+    s = rolling_summary([100, 50, 100, 200], 1)          # returns: -50%, +100%, +100%
+    assert s["worst"] == -0.5 and s["best"] == 1.0
+    assert abs(s["pct_negative"] - 1 / 3) < 1e-9 and abs(s["pct_below"] - 1 / 3) < 1e-9
+    assert rolling_summary([100, 101], 5) is None          # not enough history for the window
+    assert rolling_summary([100], 1) is None
+
+def test_longest_underwater_days():
+    d = ["2026-01-01", "2026-01-02", "2026-01-03", "2026-01-04", "2026-01-05"]
+    assert longest_underwater_days(d, [100, 110, 99, 105, 112]) == 3      # peak Jan 2 -> new high Jan 5
+    assert longest_underwater_days(d, [100, 101, 102, 103, 104]) == 0     # never below a prior peak
+    assert longest_underwater_days(d, [100, 110, 90, 80, 85]) == 3        # still under water at the end (Jan 2 -> Jan 5)
+    assert longest_underwater_days(["2026-01-01"], [100]) is None

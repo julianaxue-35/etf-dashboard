@@ -8,6 +8,7 @@ from etf.provider import YahooProvider, ProviderError
 from etf.trust import trust_score
 from etf.crosscheck import crosscheck, asx_last_price
 from etf.dividends import summarize
+from etf import news as newsmod
 
 ROOT = pathlib.Path(__file__).resolve().parent
 HORIZONS = [0.5, 1, 3, 5, 10]
@@ -40,6 +41,10 @@ def _entry(etf, dates, closes):
         "history_years": round(hy, 2), "limited_history": hy < 3,
         "last_close": closes[-1], "last_date": dates[-1],
     }
+    rs = M.rolling_summary(closes, 252, 0.06)          # every 12-month stretch in the full history (up to 10 years)
+    metrics.update({"worst_12m": rs and rs["worst"], "best_12m": rs and rs["best"], "median_12m": rs and rs["median"],
+                    "pct_12m_negative": rs and rs["pct_negative"], "pct_12m_below_6": rs and rs["pct_below"],
+                    "longest_underwater_days": M.longest_underwater_days(dates, closes)})
     scen = scenario_bands(M.daily_returns(closes), HORIZONS)
     scen = {str(k): v for k, v in scen.items()}
     # weekly points for the last 3 years keeps the file small
@@ -56,6 +61,9 @@ def run(provider, etfs, out_dir, now, sources=None, second_price=None):
         sources = _load(ROOT / "config/sources.json")
     trust = _load(out / "trust.json")
     divs_out = _load(out / "dividends.json")
+    if "search_summary" in sources:   # two or more independent sources agree on the historic crash figures
+        hs = trust_score(sources["search_summary"], True)
+        trust["_history"] = {"source": sources["search_summary"]["name"], "score": hs["score"], "reasons": hs["reasons"]}
     if "ato" in sources:
         # Tax rates were confirmed on two ATO pages that agree (rates page + tax-cut page) -> cross-checked.
         at = trust_score(sources["ato"], True)
@@ -111,4 +119,11 @@ def run(provider, etfs, out_dir, now, sources=None, second_price=None):
 if __name__ == "__main__":
     import datetime as dt
     etfs = json.loads((ROOT / "config/etfs.json").read_text())
-    run(YahooProvider(), etfs, ROOT / "data", dt.datetime.utcnow(), second_price=asx_last_price)
+    now = dt.datetime.utcnow()
+    run(YahooProvider(), etfs, ROOT / "data", now, second_price=asx_last_price)
+    try:   # news must never break the price pipeline
+        newsmod.refresh(ROOT / "data" / "news.json", json.loads((ROOT / "config/news_feeds.json").read_text()),
+                        json.loads((ROOT / "config/sources.json").read_text()),
+                        json.loads((ROOT / "config/news_rules.json").read_text()), etfs, now)
+    except Exception as e:
+        print("news refresh failed:", e)

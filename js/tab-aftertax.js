@@ -45,16 +45,16 @@ export function render(el, ctx) {
       const nr = afterTaxOutcome({ principal: inp.amt, annualReturn: 0.06, years: inp.yrs, yieldPct: 0.06, frankingPct: 0, otherIncome: inp.inc, saleIncome: inp.inc }, rules);
       const labels = RATES.map(r => `${r * 100}% a year`);
       groupedBar(q('c'), labels, [
-        { label: 'No-risk 6% (after tax)', data: rows.map(() => Math.round(nr.net)), color: '#b3261e' },
+        { label: '6% savings (after tax)', data: rows.map(() => Math.round(nr.net)), color: '#b3261e' },
         { label: 'Before tax', data: rows.map(x => Math.round(x.cur.gross)), color: '#5b6675' },
         { label: 'After tax (today\'s rule)', data: rows.map(x => Math.round(x.cur.net)) },
         { label: 'After tax (proposed rule)', data: rows.map(x => Math.round(x.idx.net)), color: '#2f6fb5' },
         { label: 'In super, from savings (after 60)', data: rows.map(x => Math.round(x.sup.net)), color: '#8a4fa8' }], { title: 'Value after ' + inp.yrs + ' years ($)', fmt: v => '$' + Math.round(v / 1000) + 'k' });
       const m = rows[1];
-      q('tk').textContent = `${money(inp.amt)} at 9% for ${inp.yrs} years: ${money(m.cur.gross)} before tax, about ${money(m.cur.net)} in your pocket after tax. The no-risk 6% leaves ${money(nr.net)} after tax.`;
+      q('tk').textContent = `${money(inp.amt)} at 9% for ${inp.yrs} years: ${money(m.cur.gross)} before tax, about ${money(m.cur.net)} in your pocket after tax. These returns are not guaranteed (see the Risk tab). 6% savings leaves ${money(nr.net)} after tax.`;
       q('tb').innerHTML = '<tr><th>Return</th><th>Before tax</th><th>Tax while holding</th><th>Tax on sale</th><th>You keep</th><th>If rule changes</th><th>In super</th></tr>'
         + rows.map(x => `<tr><td>${x.r * 100}%</td><td>${money(x.cur.gross)}</td><td>${money(x.cur.tax_on_distributions)}</td><td>${money(x.cur.cgt)}</td><td><b>${money(x.cur.net)}</b></td><td>${money(x.idx.net)}</td><td>${money(x.sup.net)}</td></tr>`).join('')
-        + `<tr><td>No-risk 6%</td><td>${money(nr.gross)}</td><td>${money(nr.tax_on_distributions)}</td><td>–</td><td><b>${money(nr.net)}</b></td><td>–</td><td>–</td></tr>`;
+        + `<tr><td>6% savings</td><td>${money(nr.gross)}</td><td>${money(nr.tax_on_distributions)}</td><td>–</td><td><b>${money(nr.net)}</b></td><td>–</td><td>–</td></tr>`;
     } catch (e) { q('msg').textContent = e.message; q('tk').textContent = 'Fix the highlighted input to see results.'; }
   };
   q('tf').onchange = () => { setDefaults(); draw(); };

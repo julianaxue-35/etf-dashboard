@@ -29,3 +29,10 @@ def test_yearly_history():
     divs = [("2024-03-01", 1.0), ("2024-09-01", 1.0), ("2025-03-01", 2.0), ("2026-03-01", 3.0)]
     s = summarize(divs, 100, NOW)
     assert s["by_year"][-3:] == [{"year": 2024, "amount": 2.0}, {"year": 2025, "amount": 2.0}, {"year": 2026, "amount": 3.0}]
+
+
+def test_dividend_cut_risk_uses_complete_years_only():
+    divs = [("2022-03-01", 4.0), ("2023-03-01", 2.0), ("2024-03-01", 3.0), ("2025-03-01", 3.3), ("2026-03-01", 0.5)]
+    s = summarize(divs, 100, NOW)                      # 2026 is a partial year: ignored
+    assert abs(s["worst_yoy_change"] - (-0.5)) < 1e-9 and s["years_cut"] == 1
+    assert summarize([("2025-03-01", 3.3)], 100, NOW)["worst_yoy_change"] is None    # need two complete years
