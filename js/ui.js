@@ -25,3 +25,17 @@ export function trustBadge(entry) {
     + `${lvl} ${entry.score}/100</button>`
     + `<span class="why sub" hidden>Source: ${esc(entry.source)}.${why}</span></span>`;
 }
+
+// Price source badge for the fund actually on screen (never another fund's).
+export function priceBadge(trustMap, ticker) {
+  return trustBadge(trustMap && trustMap[ticker] ? trustMap[ticker].price : null);
+}
+
+// Fee text; † = checked from a search summary of the issuer page (weaker), ? = unchecked.
+export function feeLabel(e) {
+  if (e.category === 'reference') return '–';
+  const f = e.fee_pct.toFixed(2) + '%';
+  if (e.fee_check === 'issuer_page_via_search') return f + '†';
+  if (e.fee_check !== 'issuer_page') return f + '?';
+  return f;
+}

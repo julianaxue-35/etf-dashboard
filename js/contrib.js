@@ -3,6 +3,7 @@ const mrate = a => Math.pow(1 + a, 1 / 12) - 1;
 
 export function monthlyNeeded({ goal, startBalance = 0, years, annualReturn }) {
   if (!Number.isFinite(years) || years <= 0) return { value: null, reason: 'Number of years must be more than 0.' };
+  if (years > 100) return { value: null, reason: 'Number of years must be 100 or fewer.' };
   if (!Number.isFinite(goal) || goal < 0) return { value: null, reason: 'Goal must be 0 or more.' };
   if (!Number.isFinite(startBalance) || startBalance < 0) return { value: null, reason: 'Starting amount cannot be negative.' };
   if (!Number.isFinite(annualReturn) || annualReturn <= -1) return { value: null, reason: 'Return must be greater than -100%.' };

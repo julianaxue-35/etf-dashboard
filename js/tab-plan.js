@@ -1,6 +1,6 @@
 import { lineChart, groupedBar } from './charts.js';
 import { monthlyNeeded, balanceAt, rollingDca } from './contrib.js';
-import { trustBadge, fmtPct, esc } from './ui.js';
+import { priceBadge, fmtPct, esc } from './ui.js';
 
 const money = v => '$' + Math.round(v).toLocaleString('en-AU');
 const RATES = [0.06, 0.08, 0.10];
@@ -23,7 +23,7 @@ export function render(el, ctx) {
     <div><label for="pl">Amount ($)</label><input id="pl" type="number" min="0" step="1000" value="${v0.lump}"></div></div>
     <div class="chart" style="height:220px"><canvas id="c2" role="img" aria-label="Lump sum versus spread over 12 months"></canvas></div>
     <ul class="tight" id="dl"></ul>
-    <div class="sub">Source: ${trustBadge(ctx.trust.A200?.price)}</div>
+    <div class="sub">Source: <span id="tb"></span></div>
     <details class="more"><summary>More</summary>Tested on every 12-month window in the last 3 years of weekly prices. Spread = one-twelfth bought each month; cash waiting earns nothing here (a savings account would help it slightly). History here is mostly a rising market, which favours lump sums; spreading mainly reduces regret if prices fall soon after you buy.</details></div>`;
   const q = id => el.querySelector('#' + id);
   q('pf').value = funds.some(e => e.ticker === v0.t) ? v0.t : funds[0].ticker;
@@ -40,8 +40,9 @@ export function render(el, ctx) {
       lineChart(q('c1'), res.map(x => ({ label: `${x.r * 100}% a year (${money(x.value)}/mo)`, dates: months.map(y => 'Yr ' + y), xs: months, xunit: ' yr',
         values: months.map(y => Math.round(balanceAt({ startBalance: inp.start, monthly: x.value, annualReturn: x.r, months: y * 12 }))) })), 'Balance ($)');
       q('t1').innerHTML = '<tr><th>Yearly return</th><th>Add each month</th><th>You put in</th><th>Growth</th></tr>' + res.map(x => {
-        const put = inp.start + x.value * inp.yrs * 12; return `<tr><td>${x.r * 100}%</td><td><b>${money(x.value)}</b></td><td>${money(put)}</td><td>${money(inp.goal - put)}</td></tr>`; }).join('');
+        const put = inp.start + x.value * inp.yrs * 12; return `<tr><td>${x.r * 100}%</td><td><b>${money(x.value)}</b></td><td>${money(put)}</td><td>${inp.goal >= put ? money(inp.goal - put) : '–'}</td></tr>`; }).join('');
     }
+    q('tb').innerHTML = priceBadge(ctx.trust, inp.t);
     const p = ctx.prices[inp.t].p, r = rollingDca(p, 12);
     if (!r || !(inp.lump >= 0)) { q('dl').innerHTML = '<li>Not enough price history for this test.</li>'; return; }
     groupedBar(q('c2'), ['Typical 12-month result'], [{ label: 'All at once', data: [Math.round(inp.lump * r.medianLump)] }, { label: 'Spread over 12 months', data: [Math.round(inp.lump * r.medianDca)] }].map((d, i) => ({ ...d, color: i ? '#c27c0e' : '#0f5f4a' })), { title: `Value of ${money(inp.lump)} after 12 months ($)`, fmt: v => '$' + Math.round(v).toLocaleString('en-AU') });

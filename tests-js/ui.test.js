@@ -38,3 +38,21 @@ test('fmtPct', () => {
 });
 
 test('esc', () => { assert.equal(esc('<&>"'), '&lt;&amp;&gt;&quot;'); });
+
+import { priceBadge, feeLabel } from '../js/ui.js';
+
+test('priceBadge uses the selected ticker, not a fixed one', () => {
+  const trust = { A200: { price: { score: 67, reasons: [], source: 'Yahoo' } },
+                  NDQ: { price: { score: 40, reasons: ['Price differs from the ASX figure by 2.0%.'], source: 'Yahoo' } } };
+  assert.match(priceBadge(trust, 'NDQ'), /Low 40/);
+  assert.match(priceBadge(trust, 'NDQ'), /differs from the ASX/);
+  assert.match(priceBadge(trust, 'A200'), /Medium 67/);
+  assert.match(priceBadge(trust, 'ZZZ'), /No source/);
+});
+
+test('feeLabel marks fees read via search summary', () => {
+  assert.equal(feeLabel({ category: 'core', fee_pct: 0.04, fee_check: 'issuer_page' }), '0.04%');
+  assert.equal(feeLabel({ category: 'core', fee_pct: 0.07, fee_check: 'issuer_page_via_search' }), '0.07%†');
+  assert.equal(feeLabel({ category: 'reference', fee_pct: 0, fee_check: 'n/a' }), '–');
+  assert.equal(feeLabel({ category: 'core', fee_pct: 0.2, fee_check: 'unverified' }), '0.20%?');
+});

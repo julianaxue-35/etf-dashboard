@@ -33,3 +33,11 @@ export function makeStore(storage) {
     },
   };
 }
+
+// Funds whose latest price is older than `days` (a failing ticker can go stale while the rest refresh).
+export function staleTickers(metrics, now = new Date(), days = 5) {
+  return Object.entries(metrics || {}).filter(([, m]) => {
+    const t = m && m.last_date ? Date.parse(m.last_date) : NaN;
+    return Number.isNaN(t) || (now.getTime() - t) / 86400000 > days;
+  }).map(([k]) => k);
+}

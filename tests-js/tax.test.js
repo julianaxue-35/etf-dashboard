@@ -73,3 +73,15 @@ test('selling in a low-income year cuts CGT (saleIncome)', () => {
   close(retired.cgt, 2725.6, 1);
   close(working.cgt, 4375.4, 1);
 });
+
+test('input validation: franking, yield, income, years cap', () => {
+  const ok = { principal: 20000, annualReturn: 0.09, years: 10, yieldPct: 0.03, frankingPct: 0.5, otherIncome: 50000 };
+  assert.throws(() => afterTaxOutcome({ ...ok, frankingPct: 5 }, R), /franked/i);
+  assert.throws(() => afterTaxOutcome({ ...ok, frankingPct: -0.1 }, R), /franked/i);
+  assert.throws(() => afterTaxOutcome({ ...ok, yieldPct: -0.02 }, R), /distribution/i);
+  assert.throws(() => afterTaxOutcome({ ...ok, otherIncome: -1 }, R), /income/i);
+  assert.throws(() => afterTaxOutcome({ ...ok, saleIncome: -1 }, R), /income/i);
+  assert.throws(() => afterTaxOutcome({ ...ok, years: 100000 }, R), /100 or fewer/i);
+  assert.doesNotThrow(() => afterTaxOutcome({ ...ok, years: 100 }, R));
+  assert.throws(() => superOutcome({ principal: 1, annualReturn: 0.05, years: 1000 }, R), /100 or fewer/i);
+});

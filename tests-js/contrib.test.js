@@ -62,3 +62,8 @@ test('rollingDca reports typical final value of each approach per $1', () => {
   const flat = rollingDca(Array(200).fill(100), 12);
   close(flat.medianLump, 1, 1e-9); close(flat.medianDca, 1, 1e-9);
 });
+
+test('monthlyNeeded caps years', () => {
+  const r = monthlyNeeded({ goal: 1000, startBalance: 0, years: 100000, annualReturn: 0.05 });
+  assert.equal(r.value, null); assert.match(r.reason, /100 or fewer/i);
+});

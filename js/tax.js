@@ -1,9 +1,13 @@
 // Australian tax estimates. Simplified on purpose: confirm with an accountant.
 // Rules come from config/tax.json (year-stamped, checked against ato.gov.au).
 
-function checkInputs({ principal, years, annualReturn }) {
+function checkInputs({ principal, years, annualReturn, yieldPct = 0, frankingPct = 0, otherIncome = 0, saleIncome = 0 }) {
   if (!Number.isFinite(principal) || principal < 0) throw new Error('Amount cannot be negative.');
   if (!Number.isFinite(years) || years <= 0) throw new Error('Number of years must be more than 0.');
+  if (years > 100) throw new Error('Number of years must be 100 or fewer.');
+  if (!Number.isFinite(yieldPct) || yieldPct < 0 || yieldPct > 1) throw new Error('Distribution yield must be between 0% and 100%.');
+  if (!Number.isFinite(frankingPct) || frankingPct < 0 || frankingPct > 1) throw new Error('Franked share must be between 0% and 100%.');
+  if (!Number.isFinite(otherIncome) || otherIncome < 0 || !Number.isFinite(saleIncome) || saleIncome < 0) throw new Error('Income cannot be negative.');
   if (!Number.isFinite(annualReturn) || annualReturn <= -1) throw new Error('Return must be greater than -100%.');
 }
 
@@ -41,7 +45,7 @@ export function cgtOnSale({ gain, heldMonths, otherIncome = 0, costBase = 0, cgt
 }
 
 export function afterTaxOutcome({ principal, annualReturn, years, yieldPct = 0, frankingPct = 0, otherIncome = 0, saleIncome = otherIncome, cgtRule = 'current', cpi }, rules) {
-  checkInputs({ principal, years, annualReturn });
+  checkInputs({ principal, years, annualReturn, yieldPct, frankingPct, otherIncome, saleIncome });
   let value = principal, cost = principal, taxDist = 0, left = years;
   const corp = 0.30;
   while (left > 1e-9) {

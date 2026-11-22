@@ -1,6 +1,6 @@
 import { lineChart } from './charts.js';
 import { dipStatus, tranches, peakPrice, levelPrices } from './dips.js';
-import { trustBadge, fmtPct, esc } from './ui.js';
+import { priceBadge, fmtPct, esc } from './ui.js';
 
 const money = v => '$' + Math.round(v).toLocaleString('en-AU');
 
@@ -16,7 +16,7 @@ export function render(el, ctx) {
       <div class="row"><input class="lv" type="number" min="1" max="90" value="${lv0[0]}" aria-label="Level 1"><input class="lv" type="number" min="1" max="90" value="${lv0[1]}" aria-label="Level 2"><input class="lv" type="number" min="1" max="90" value="${lv0[2]}" aria-label="Level 3"></div></div></div>
     <div class="sub" id="msg" role="alert"></div></div>
   <div class="card"><h2>Price and your buy levels</h2><div class="chart"><canvas id="c" role="img" aria-label="Price with dip buy levels"></canvas></div>
-    <div class="sub">Source: ${trustBadge(ctx.trust.A200?.price)}</div></div>
+    <div class="sub">Source: <span id="tb"></span> <span id="asat"></span></div></div>
   <div class="card"><h2>Your plan</h2><div class="tablewrap"><table id="pt"></table></div>
     <div class="sub" id="note"></div>
     <details class="more"><summary>More</summary>Nobody can time a bubble. A fall can keep going after your first buy, which is why cash is split across levels (30% / 30% / 40%) instead of all at once. Peak = highest price in the last 3 years. Alerts show here only.</details></div>`;
@@ -28,6 +28,7 @@ export function render(el, ctx) {
     if (raw.some(v => !(v >= 1 && v <= 90))) { msg.textContent = 'Levels must be between 1% and 90%.'; return; }
     const levels = raw.map(v => -v / 100).sort((a, b) => b - a);
     const reserve = Math.max(0, +el.querySelector('#dr').value || 0);
+    el.querySelector('#tb').innerHTML = priceBadge(ctx.trust, t); el.querySelector('#asat').textContent = 'Price as at ' + m.last_date + '.';
     ctx.store.set('dip:ticker', t); ctx.store.set('dip:levels', raw); ctx.store.set('dip:reserve', reserve);
     const peak = peakPrice(m.last_close, m.drawdown_from_peak), st = dipStatus(m.drawdown_from_peak, levels);
     const tr = tranches(reserve, levels), prices = levelPrices(peak, levels);

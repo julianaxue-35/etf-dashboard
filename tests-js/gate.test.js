@@ -27,3 +27,12 @@ test('store returns default when storage throws', () => {
   ok.set('k', { a: 1 });
   assert.deepEqual(ok.get('k', null), { a: 1 });
 });
+
+import { staleTickers } from '../js/core.js';
+
+test('staleTickers flags any fund whose last price is old', () => {
+  const now = new Date('2026-11-22T00:00:00Z');
+  const m = { A: { last_date: '2026-11-20' }, B: { last_date: '2026-10-01' }, C: {} };
+  assert.deepEqual(staleTickers(m, now, 5).sort(), ['B', 'C']);
+  assert.deepEqual(staleTickers({}, now, 5), []);
+});

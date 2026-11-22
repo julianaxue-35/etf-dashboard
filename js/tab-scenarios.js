@@ -1,5 +1,5 @@
 import { lineChart } from './charts.js';
-import { trustBadge, fmtPct, esc } from './ui.js';
+import { priceBadge, fmtPct, esc } from './ui.js';
 
 const H = ['0.5', '1', '3', '5', '10'];
 const money = v => '$' + Math.round(v).toLocaleString('en-AU');
@@ -15,13 +15,14 @@ export function render(el, ctx) {
     <div><label for="sa">Amount invested ($)</label><input id="sa" type="number" min="0" step="1000" value="${amt0}"></div></div></div>
   <div class="card"><h2>Where $<span id="amtl"></span> could end up</h2>
     <div class="chart"><canvas id="c" role="img" aria-label="Range of possible outcomes over time"></canvas></div>
-    <div class="sub">Source: ${trustBadge(ctx.trust.A200?.price)} price history</div>
+    <div class="sub">Price history source: <span id="tb"></span></div>
     <div class="sub" id="lim"></div>
     <details class="more"><summary>More</summary>Bad / good case = 10th / 90th percentile of 5,000 simulated paths built by reshuffling this fund's own past daily returns. Real outcomes can fall outside this range. A short or unusually strong history makes it too optimistic.</details></div>
   <div class="card"><h2>Chance of beating your goals</h2><div class="tablewrap"><table id="pt"></table></div></div>`;
   el.querySelector('#sf').value = funds.some(e => e.ticker === t0) ? t0 : funds[0].ticker;
   const draw = () => {
     const t = el.querySelector('#sf').value, amt = Math.max(0, +el.querySelector('#sa').value || 0);
+    el.querySelector('#tb').innerHTML = priceBadge(ctx.trust, t);
     ctx.store.set('scen:ticker', t); ctx.store.set('scen:amount', amt);
     el.querySelector('#amtl').textContent = amt.toLocaleString('en-AU');
     const sc = ctx.scenarios[t]; const hs = H.filter(h => sc[h]);

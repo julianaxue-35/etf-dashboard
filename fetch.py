@@ -82,7 +82,7 @@ def run(provider, etfs, out_dir, now, sources=None, second_price=None):
                                   "reasons": pt["reasons"], "crosscheck": cc["ok"], "gap": cc["gap"],
                                   "checked_against": "ASX website data service" if cc["ok"] is not None else None},
                         "facts": facts}
-        except (ProviderError, KeyError, ValueError):
+        except Exception:   # one bad ticker must never stop the whole daily run
             failed.append(t)
     if len(failed) < len(etfs):
         for n, v in (("prices", prices), ("metrics", metrics), ("scenarios", scen), ("trust", trust)):

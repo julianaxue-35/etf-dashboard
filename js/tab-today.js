@@ -1,5 +1,5 @@
-import { barChart, lineChart, rebased } from './charts.js';
-import { trustBadge, fmtPct, esc } from './ui.js';
+import { barChart, lineChart, alignSeries } from './charts.js';
+import { priceBadge, fmtPct, esc } from './ui.js';
 
 const GROUPS = { core: 'Core (broad market)', tech: 'Technology & AI', healthcare: 'Healthcare', infrastructure: 'Infrastructure', reference: 'Single stocks (reference)' };
 
@@ -23,11 +23,9 @@ export function render(el, ctx) {
   const grp = el.querySelector('#grp');
   const draw = () => {
     const sel = live.filter(e => e.category === grp.value);
-    const series = sel.map(e => { const p = ctx.prices[e.ticker]; return { label: e.ticker, dates: p.d, values: rebased(p.d, p.p) }; });
-    // dates differ slightly by fund: align on the longest set
-    series.sort((a, b) => b.dates.length - a.dates.length);
-    lineChart(el.querySelector('#c1'), series, 'Value of $100 invested');
-    el.querySelector('#cap1').innerHTML = 'Price source: ' + sel.map(e => `${esc(e.ticker)} ${trustBadge(ctx.trust[e.ticker]?.price)}`).slice(0, 1).join('') + ' (same source for all funds)';
+    const { series } = alignSeries(sel.map(e => ({ label: e.ticker, dates: ctx.prices[e.ticker].d, prices: ctx.prices[e.ticker].p })));
+    lineChart(el.querySelector('#c1'), series, 'Value of $100 invested (each fund starts at 100 on its first date)');
+    el.querySelector('#cap1').innerHTML = 'Price sources: ' + sel.map(e => `${esc(e.ticker)} ${priceBadge(ctx.trust, e.ticker)}`).join(' ');
   };
   grp.onchange = draw; draw();
   const sorted = [...funds].sort((a, b) => metrics[a.ticker].drawdown_from_peak - metrics[b.ticker].drawdown_from_peak);

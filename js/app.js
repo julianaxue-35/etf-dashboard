@@ -1,5 +1,5 @@
 import { PASSCODE_HASH, APP_VERSION } from './config.js';
-import { checkPasscode, isStale, makeStore } from './core.js';
+import { checkPasscode, isStale, staleTickers, makeStore } from './core.js';
 
 const store = makeStore(window.localStorage || { getItem() { throw 0; }, setItem() { throw 0; } });
 const TABS = [
@@ -38,6 +38,7 @@ async function start() {
   const when = ctx.meta.updated_utc ? new Date(ctx.meta.updated_utc + 'Z') : null;
   $('updated').textContent = when ? 'Data updated ' + when.toLocaleString('en-AU', { dateStyle: 'medium', timeStyle: 'short' }) : 'Data not yet updated';
   if (isStale(ctx.meta)) { $('stale').hidden = false; $('stale').textContent = 'Data is more than 3 days old. Prices below may be out of date.'; }
+  else if (staleTickers(ctx.metrics).length) { $('stale').hidden = false; $('stale').textContent = 'Prices for ' + staleTickers(ctx.metrics).join(', ') + ' are more than 5 days old. Treat those figures with caution.'; }
   else if (ctx.meta.failed && ctx.meta.failed.length) { $('stale').hidden = false; $('stale').textContent = 'Latest refresh failed for: ' + ctx.meta.failed.join(', ') + '. Showing last good data for these.'; }
   const nav = $('nav');
   TABS.forEach(t => { const b = document.createElement('button'); b.textContent = t.label; b.dataset.id = t.id; b.onclick = () => show(ctx, t.id); nav.appendChild(b); });

@@ -16,6 +16,15 @@ function mount(canvas, cfg) {
   const c = new Chart(canvas, cfg); live.set(canvas, c); return c;
 }
 
+// Put funds with different start dates on one shared date axis; each is rebased to 100 at its OWN first date.
+// input [{label, dates, prices}] -> {dates, series:[{label, dates, values}]} (null = no data yet on that date)
+export function alignSeries(list) {
+  const all = [...new Set(list.flatMap(s => s.dates))].sort();
+  return { dates: all, series: list.map(s => {
+    const base = s.prices[0], byDate = new Map(s.dates.map((d, i) => [d, s.prices[i] / base * 100]));
+    return { label: s.label, dates: all, values: all.map(d => byDate.has(d) ? byDate.get(d) : null) };
+  }) };
+}
 // series: [{label, dates, values}] rebased to 100 at the start
 export function rebased(dates, prices) {
   return prices.length ? prices.map(p => (p / prices[0]) * 100) : [];
@@ -30,7 +39,7 @@ export function lineChart(canvas, series, yTitle) {
   if (linear) { opts.scales.x.type = 'linear'; opts.scales.x.ticks.callback = v => v + (series[0].xunit || ''); opts.scales.x.ticks.maxTicksLimit = 11; opts.scales.x.min = 0; }
   return mount(canvas, { type: 'line', data: { labels: linear ? undefined : labels, datasets: series.map((s, i) => ({
     label: s.label, data: linear ? s.values.map((v, j) => ({ x: s.xs[j], y: v })) : s.values, borderColor: pal[i % pal.length], backgroundColor: pal[i % pal.length],
-    borderDash: s.dash ? [6, 4] : [], borderWidth: s.dash ? 1.5 : 2, borderColor: s.color || pal[i % pal.length], backgroundColor: s.color || pal[i % pal.length] })) }, options: opts });
+    spanGaps: false, borderDash: s.dash ? [6, 4] : [], borderWidth: s.dash ? 1.5 : 2, borderColor: s.color || pal[i % pal.length], backgroundColor: s.color || pal[i % pal.length] })) }, options: opts });
 }
 export function barChart(canvas, labels, values, { color, title, horizontal = true, fmt = v => v } = {}) {
   const { opts } = base();

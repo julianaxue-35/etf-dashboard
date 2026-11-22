@@ -83,3 +83,15 @@ def test_ato_trust_entry_written(tmp_path):
     fetch.run(FakeProvider({"AAA": series()}), etfs, tmp_path, NOW)
     t = json.loads((tmp_path / "trust.json").read_text())["_ato"]
     assert t["score"] == 98 and any("capital gains" in r for r in t["reasons"])
+
+class Boom:
+    def history(self, ticker, years=10):
+        if ticker == "AAA":
+            raise RuntimeError("unexpected parser crash")
+        return series()
+
+def test_unexpected_error_on_one_ticker_does_not_stop_run(tmp_path):
+    fetch.run(Boom(), ETFS, tmp_path, NOW)
+    m = json.loads((tmp_path / "metrics.json").read_text())
+    assert "BBB" in m and "AAA" not in m
+    assert json.loads((tmp_path / "meta.json").read_text())["failed"] == ["AAA"]
