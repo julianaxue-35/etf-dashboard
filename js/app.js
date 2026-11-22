@@ -4,6 +4,7 @@ import { checkPasscode, isStale, makeStore } from './core.js';
 const store = makeStore(window.localStorage || { getItem() { throw 0; }, setItem() { throw 0; } });
 const TABS = [
   { id: 'today', label: 'Today', mod: './tab-today.js' },
+  { id: 'compare', label: 'Compare', mod: './tab-compare.js' },
 ];
 const $ = id => document.getElementById(id);
 
@@ -46,3 +47,9 @@ $('gateform').addEventListener('submit', async e => {
 });
 let ok = false; try { ok = sessionStorage.getItem('etf:ok') === '1'; } catch {}
 if (ok) start();
+
+// Tap a trust badge to show/hide why the score is below 100.
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-trust]'); if (!b) return;
+  const why = b.nextElementSibling; why.hidden = !why.hidden; b.setAttribute('aria-expanded', String(!why.hidden));
+});
