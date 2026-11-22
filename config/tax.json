@@ -1,0 +1,24 @@
+{
+ "year": "2026-27",
+ "source": "https://www.ato.gov.au/tax-rates-and-codes/tax-rates-australian-residents",
+ "checked": "2026-11-22",
+ "confirm_with_accountant": true,
+ "brackets": [
+  {"upTo": 18200, "rate": 0.0},
+  {"upTo": 45000, "rate": 0.15},
+  {"upTo": 135000, "rate": 0.30},
+  {"upTo": 190000, "rate": 0.37},
+  {"upTo": null, "rate": 0.45}
+ ],
+ "medicare": 0.02,
+ "cgt_discount": 0.5,
+ "cgt_discount_months": 12,
+ "cgt_reform": {
+  "status": "announced in 2026-27 Budget, not yet law",
+  "source": "https://www.ato.gov.au/individuals-and-families/investments-and-assets/capital-gains-tax/capital-gains-tax-reform",
+  "summary": "50% discount replaced by cost-base indexation for gains accruing on or after 1 July 2027; gains accrued before then keep the discount"
+ },
+ "super_contrib_tax": 0.15,
+ "super_earnings_tax": 0.15,
+ "super_earnings_tax_after_60_pension": 0.0
+}

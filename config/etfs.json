@@ -1,0 +1,19 @@
+[
+ {"ticker":"A200","name":"BetaShares Australia 200 ETF","category":"core","fee_pct":0.04,"fee_verified":false,"notes":"ASX 200, franked dividends"},
+ {"ticker":"VAS","name":"Vanguard Australian Shares Index ETF","category":"core","fee_pct":0.07,"fee_verified":false,"notes":"ASX 300"},
+ {"ticker":"VGS","name":"Vanguard MSCI Index International Shares ETF","category":"core","fee_pct":0.18,"fee_verified":false,"notes":"Developed markets ex-Australia, unhedged"},
+ {"ticker":"VDHG","name":"Vanguard Diversified High Growth Index ETF","category":"core","fee_pct":0.27,"fee_verified":false,"notes":"90/10 growth/defensive, one-fund portfolio"},
+ {"ticker":"IVV","name":"iShares S&P 500 ETF","category":"core","fee_pct":0.04,"fee_verified":false,"notes":"US large caps"},
+ {"ticker":"NDQ","name":"BetaShares NASDAQ 100 ETF","category":"tech","fee_pct":0.48,"fee_verified":false,"notes":"US tech/AI heavy, concentrated in mega-caps"},
+ {"ticker":"SEMI","name":"Global X Semiconductor ETF","category":"tech","fee_pct":0.57,"fee_verified":false,"notes":"AI chip exposure, high volatility"},
+ {"ticker":"RBTZ","name":"BetaShares Global Robotics and Artificial Intelligence ETF","category":"tech","fee_pct":0.57,"fee_verified":false,"notes":"AI/robotics theme"},
+ {"ticker":"TECH","name":"Global X Morningstar Global Technology ETF","category":"tech","fee_pct":0.45,"fee_verified":false,"notes":"Global technology"},
+ {"ticker":"IXJ","name":"iShares Global Healthcare ETF (AU)","category":"healthcare","fee_pct":0.40,"fee_verified":false,"notes":"Global healthcare, unhedged"},
+ {"ticker":"HLTH","name":"VanEck Global Healthcare Leaders ETF","category":"healthcare","fee_pct":0.45,"fee_verified":false,"notes":"Global healthcare leaders"},
+ {"ticker":"IFRA","name":"VanEck FTSE Global Infrastructure (AUD Hedged) ETF","category":"infrastructure","fee_pct":0.20,"fee_verified":false,"notes":"Listed global infrastructure, hedged"},
+ {"ticker":"GLIN","name":"iShares Core FTSE Global Infrastructure (AUD Hedged) ETF","category":"infrastructure","fee_pct":0.20,"fee_verified":false,"notes":"Listed since May 2023, under 3 years of history"},
+ {"ticker":"CSL","name":"CSL Limited","category":"reference","fee_pct":0.0,"fee_verified":true,"notes":"Single stock, reference only (held inside A200, VAS, healthcare ETFs)"},
+ {"ticker":"TCL","name":"Transurban Group","category":"reference","fee_pct":0.0,"fee_verified":true,"notes":"Single stock, infrastructure reference"},
+ {"ticker":"APA","name":"APA Group","category":"reference","fee_pct":0.0,"fee_verified":true,"notes":"Single stock, infrastructure reference"},
+ {"ticker":"MQG","name":"Macquarie Group Limited","category":"reference","fee_pct":0.0,"fee_verified":true,"notes":"Single stock, infrastructure reference"}
+]
