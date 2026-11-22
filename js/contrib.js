@@ -53,3 +53,25 @@ export function rollingDca(prices, months = 12, pointsPerYear = 52) {
   diffs.sort((a, b) => a - b);
   return { medianLump, medianDca, windows: diffs.length, dcaWinRate: dcaWins / diffs.length, medianDiff: diffs[Math.floor(diffs.length / 2)], worstLumpDiff: diffs[0], bestLumpDiff: diffs[diffs.length - 1] };
 }
+
+// Spread a lump sum over `months` equal monthly buys. Rounding pennies go to the last buy.
+export function buildSchedule({ amount, months = 12, start, brokerage = 0 }) {
+  if (!Number.isFinite(amount) || amount <= 0) throw new Error('Amount must be more than $0.');
+  if (!Number.isInteger(months) || months < 1 || months > 60) throw new Error('Months must be a whole number from 1 to 60.');
+  if (!Number.isFinite(brokerage) || brokerage < 0) throw new Error('Brokerage cannot be negative.');
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(start || '');
+  if (!m) throw new Error('Start date must look like 2026-12-01.');
+  const [y0, mo0, d0] = [+m[1], +m[2] - 1, +m[3]];
+  const each = Math.floor((amount / months) * 100) / 100;
+  const rows = []; let cum = 0;
+  for (let k = 0; k < months; k++) {
+    const buy = k === months - 1 ? Math.round((amount - each * (months - 1)) * 100) / 100 : each;
+    cum = Math.round((cum + buy) * 100) / 100;
+    const total = mo0 + k, y = y0 + Math.floor(total / 12), mo = total % 12;
+    const dim = new Date(Date.UTC(y, mo + 1, 0)).getUTCDate();
+    const date = `${y}-${String(mo + 1).padStart(2, '0')}-${String(Math.min(d0, dim)).padStart(2, '0')}`;
+    rows.push({ n: k + 1, date, buy, brokerage, cumulative: cum });
+  }
+  const totalBrokerage = brokerage * months;
+  return { rows, totalBrokerage, brokeragePct: totalBrokerage / amount };
+}

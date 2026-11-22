@@ -67,3 +67,26 @@ test('monthlyNeeded caps years', () => {
   const r = monthlyNeeded({ goal: 1000, startBalance: 0, years: 100000, annualReturn: 0.05 });
   assert.equal(r.value, null); assert.match(r.reason, /100 or fewer/i);
 });
+
+import { buildSchedule } from '../js/contrib.js';
+
+test('buildSchedule: even split, rounding goes to the last buy, dates monthly', () => {
+  const s = buildSchedule({ amount: 10000, months: 12, start: '2026-12-01', brokerage: 5 });
+  assert.equal(s.rows.length, 12);
+  close(s.rows.reduce((a, r) => a + r.buy, 0), 10000, 0.001);
+  assert.equal(s.rows[0].buy, 833.33); assert.equal(s.rows[11].buy, 833.37);
+  assert.equal(s.rows[0].date, '2026-12-01'); assert.equal(s.rows[1].date, '2027-01-01'); assert.equal(s.rows[11].date, '2027-11-01');
+  assert.equal(s.totalBrokerage, 60); close(s.brokeragePct, 0.006, 1e-9);
+  close(s.rows[11].cumulative, 10000, 0.001);
+});
+
+test('buildSchedule: month-end clamping and validation', () => {
+  const s = buildSchedule({ amount: 3000, months: 3, start: '2027-01-31', brokerage: 0 });
+  assert.deepEqual(s.rows.map(r => r.date), ['2027-01-31', '2027-02-28', '2027-03-31']);
+  assert.throws(() => buildSchedule({ amount: 0, months: 12, start: '2026-12-01' }), /amount/i);
+  assert.throws(() => buildSchedule({ amount: 1000, months: 0, start: '2026-12-01' }), /months/i);
+  assert.throws(() => buildSchedule({ amount: 1000, months: 100, start: '2026-12-01' }), /months/i);
+  assert.throws(() => buildSchedule({ amount: 1000, months: 12, start: 'nope' }), /date/i);
+  assert.throws(() => buildSchedule({ amount: 1000, months: 12, start: '2026-12-01', brokerage: -1 }), /brokerage/i);
+  assert.equal(buildSchedule({ amount: 1000, months: 1, start: '2026-12-01' }).rows.length, 1);
+});

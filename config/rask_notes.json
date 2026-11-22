@@ -1,0 +1,165 @@
+{
+ "retrieved": "2026-11-22",
+ "source_note": "Public show notes and articles only (I cannot listen to audio). Points are paraphrased. Rask is an opinion source and most pages carry sponsorship or product promotion.",
+ "themes": [
+  "Decide what the money is for and your growth vs safer split first; choosing the ETF comes after.",
+  "More ETFs do not mean more diversification: many hold the same big companies. Know the job each fund does.",
+  "Invest regularly and keep costs low rather than trying to time crashes (their own claim that markets rise in most years is unverified).",
+  "Brokerage and repeated trading quietly eat returns.",
+  "Set rules for how you will behave in falls before they happen; separate what you can control from what you cannot."
+ ],
+ "items": [
+  {
+   "id": "r1",
+   "title": "How to build a simple investment portfolio that actually works",
+   "date": "2026-09-30",
+   "format": "Podcast show notes",
+   "read": "Full show notes",
+   "url": "https://www.raskmedia.com.au/2026/09/30/how-to-build-a-simple-investment-portfolio-that-actually-works/",
+   "points": [
+    "Start with the purpose of the money, then split it between shares, bonds, cash and property.",
+    "Holding more funds does not automatically diversify you; overlapping ETFs are common.",
+    "Know your risk tolerance (how much you can stomach) and your risk capacity (how much you can afford to lose).",
+    "Let tax inform decisions but not drive them; set guardrails before markets get volatile."
+   ],
+   "promo": "Sponsored by Global X; Pearler referral code and Rask product links."
+  },
+  {
+   "id": "r2",
+   "title": "How to build an ETF portfolio from scratch (Portfolio Construction, ep 1)",
+   "date": "2026-08-10",
+   "format": "Podcast show notes (guest from fund issuer Global X)",
+   "read": "Full show notes",
+   "url": "https://www.raskmedia.com.au/2026/08/10/jess-leung-from-global-x-on-building-an-etf-portfolio-from-scratch/",
+   "points": [
+    "Give every fund a job: a core holding plus smaller satellite holdings.",
+    "Overall allocation matters more than small differences between similar ETFs.",
+    "Watch for home bias and duplicated exposure.",
+    "Spreads, brokerage and frequent trading erode returns over time."
+   ],
+   "promo": "Guest works for a fund issuer; sponsored by Global X."
+  },
+  {
+   "id": "r3",
+   "title": "Save like a pessimist, invest like an optimist",
+   "date": "2026-11-08",
+   "format": "Article",
+   "read": "Full article",
+   "url": "https://www.raskmedia.com.au/2026/11/08/save-like-a-pessimist-invest-like-an-optimist/",
+   "points": [
+    "Focus on what you control: spending, savings rate, debt, how you invest, how you react.",
+    "Markets fall regularly; the author argues long-term investors have usually been rewarded (his 80%-of-years figure is not verified).",
+    "Invest regularly and diversify cheaply rather than predicting corrections.",
+    "Keep an emergency buffer and cut expensive debt before investing."
+   ],
+   "promo": "Moderate: free-account, course and trial offers."
+  },
+  {
+   "id": "r4",
+   "title": "How many ETFs do you actually need?",
+   "date": "2026-11-02",
+   "format": "Article",
+   "read": "Full article",
+   "url": "https://www.raskmedia.com.au/2026/11/02/how-many-etfs-do-you-need/",
+   "points": [
+    "Ask why you own each holding.",
+    "Different ETFs often hold the same large companies, so more funds can mean less diversification.",
+    "Set growth vs defensive allocation before picking ETFs.",
+    "Before buying another, check what it adds and why you are buying now."
+   ],
+   "promo": "Moderate: Rask planning and trial offers; no issuer sponsor shown."
+  },
+  {
+   "id": "r5",
+   "title": "Why portfolio construction matters more than stock picking",
+   "date": "2026-11-05",
+   "format": "Sponsored article",
+   "read": "Full article",
+   "url": "https://www.raskmedia.com.au/2026/11/05/why-portfolio-construction-matters-more-than-stock-picking/",
+   "points": [
+    "A small number of stocks drive most market returns, which makes picking winners hard.",
+    "Research cited (not verified here) says most active managers trail their benchmark over the long run.",
+    "Decide the mix of Australian, global, bonds and gold before individual stocks.",
+    "ETFs let most people diversify without being stock-pickers."
+   ],
+   "promo": "Explicit: sponsored by Global X ETFs."
+  },
+  {
+   "id": "r6",
+   "title": "The $6.7 trillion AI buildout: megatrend investing",
+   "date": "2026-09-23",
+   "format": "Podcast show notes (guest from Global X)",
+   "read": "Full show notes",
+   "url": "https://www.raskmedia.com.au/2026/09/23/the-6-7-trillion-ai-buildout-arelis-agosto-on-megatrend-investing/",
+   "points": [
+    "The guest expects AI spending to flow to data centres, chips, power and some commodities.",
+    "She argues AI differs from the dot-com bubble because revenue already exists (her view, not a valuation call).",
+    "The top 10 companies are about 40% of the S&P 500, so broad funds already carry a lot of AI exposure.",
+    "Add theme funds carefully to avoid piling into the same companies."
+   ],
+   "promo": "Explicit: sponsored by Global X and the guest works there."
+  },
+  {
+   "id": "r7",
+   "title": "AI's pricing reset: the unit economics investors cannot ignore",
+   "date": "2026-10-14",
+   "format": "Podcast show notes",
+   "read": "Full show notes",
+   "url": "https://www.raskmedia.com.au/2026/10/14/ais-pricing-reset-the-unit-economics-investors-cannot-ignore/",
+   "points": [
+    "Per-seat software pricing may shrink if AI makes staff more productive.",
+    "Judge how much it costs to deliver each AI outcome.",
+    "\"Recurring revenue\" alone is not enough; ask what drives spending and how costs scale.",
+    "Look for pricing power and whether a company keeps the value it creates."
+   ],
+   "promo": "Explicit: sponsored by Stripe."
+  },
+  {
+   "id": "r8",
+   "title": "Debt recycling explained: how it works, traps and risks",
+   "date": "2026-11-06",
+   "format": "Podcast show notes (finance show)",
+   "read": "Full show notes",
+   "url": "https://www.raskmedia.com.au/2026/11/06/debt-recycling-explained-how-it-works-common-traps-and-the-risks/",
+   "points": [
+    "How loans are split and used changes whether the interest is deductible.",
+    "What qualifies depends on structure and records; get an adviser and accountant first.",
+    "Compares gradual investing with a lump sum and asks if you could cope with falls while a loan remains.",
+    "Rate rises and cash-flow stress are the key risks."
+   ],
+   "promo": "Pearler, PocketSmith and VanEck links plus Rask product links."
+  },
+  {
+   "id": "r9",
+   "title": "Is FIRE still a thing? A FIRE-proof ASX portfolio",
+   "date": "2026-10-22",
+   "format": "Podcast",
+   "read": "Short description only (advice not stated)",
+   "url": "https://www.raskmedia.com.au/2026/10/22/is-fire-still-a-thing-a-fire-proof-asx-portfolio/",
+   "points": [
+    "The description lists a portfolio of three ETFs and two shares and the maths of how much is needed to retire early; the actual advice is not in the notes."
+   ],
+   "promo": "Explicit: sponsored by Pearler."
+  },
+  {
+   "id": "r10",
+   "title": "4 steps to dollar-cost average into an ETF portfolio",
+   "date": "2025-04-11",
+   "format": "Article",
+   "read": "Full article",
+   "url": "https://www.rask.com.au/learn-to-invest/4-steps-to-dollar-cost-average-into-an-etf-portfolio/",
+   "points": [
+    "Invest a fixed amount at set intervals to reduce timing risk, and stay invested.",
+    "Automate contributions so you keep going whatever the market does.",
+    "Timing buys after quarterly distributions can reduce brokerage.",
+    "Its worked example has a small arithmetic slip in the average price."
+   ],
+   "promo": "Heavy: promotes Rask Invest's own account and fees; not a neutral how-to."
+  }
+ ],
+ "gaps": [
+  "No episode found on franking credits or CGT for investors, or on how to behave in a market crash specifically.",
+  "A200, VAS, VGS, VDHG and NDQ are not discussed in any page read.",
+  "The lump-sum vs dollar-cost averaging article (3 Apr 2025) was not read."
+ ]
+}

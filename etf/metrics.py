@@ -92,3 +92,19 @@ def longest_underwater_days(dates, prices):
                 longest = max(longest, (dd - peak_d).days)
             below, peak_p, peak_d = False, p, dd
     return longest
+
+
+def ma_gap(prices, n=200):
+    """How far the latest price is above (+) or below (-) its n-day average."""
+    p = _clean(prices)
+    if len(p) < n:
+        return None
+    avg = sum(p[-n:]) / n
+    return p[-1] / avg - 1
+
+
+def trailing_return(prices, n=252):
+    p = _clean(prices)
+    if len(p) <= n:
+        return None
+    return p[-1] / p[-1 - n] - 1

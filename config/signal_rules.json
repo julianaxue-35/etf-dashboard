@@ -1,0 +1,20 @@
+{
+ "watch_drawdown": -0.15,
+ "review_drawdown": -0.3,
+ "watch_ma_gap": -0.05,
+ "neg_news_watch": 5,
+ "stale_days": 5,
+ "low_fee": 0.1,
+ "high_fee": 0.4,
+ "concentrated_top10": 0.4,
+ "concentrated_sector": 0.4,
+ "wide_top10": 0.3,
+ "high_vol": 0.2,
+ "deep_fall": -0.25,
+ "min_history_years": 3,
+ "long_record_years": 5,
+ "target_low": 0.08,
+ "yield_pro": 0.03,
+ "savings_rate": 0.06,
+ "franked_pro": 0.5
+}

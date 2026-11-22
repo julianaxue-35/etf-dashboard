@@ -8,6 +8,7 @@ from etf.provider import YahooProvider, ProviderError
 from etf.trust import trust_score
 from etf.crosscheck import crosscheck, asx_last_price
 from etf.dividends import summarize
+from etf.holdings import summarize as summarize_holdings
 from etf import news as newsmod
 
 ROOT = pathlib.Path(__file__).resolve().parent
@@ -41,6 +42,7 @@ def _entry(etf, dates, closes):
         "history_years": round(hy, 2), "limited_history": hy < 3,
         "last_close": closes[-1], "last_date": dates[-1],
     }
+    metrics.update({"ma200_gap": M.ma_gap(closes, 200), "ret_12m": M.trailing_return(closes, 252)})
     rs = M.rolling_summary(closes, 252, 0.06)          # every 12-month stretch in the full history (up to 10 years)
     metrics.update({"worst_12m": rs and rs["worst"], "best_12m": rs and rs["best"], "median_12m": rs and rs["median"],
                     "pct_12m_negative": rs and rs["pct_negative"], "pct_12m_below_6": rs and rs["pct_below"],
@@ -61,9 +63,14 @@ def run(provider, etfs, out_dir, now, sources=None, second_price=None):
         sources = _load(ROOT / "config/sources.json")
     trust = _load(out / "trust.json")
     divs_out = _load(out / "dividends.json")
+    hold_out = _load(out / "holdings.json")
     if "search_summary" in sources:   # two or more independent sources agree on the historic crash figures
         hs = trust_score(sources["search_summary"], True)
         trust["_history"] = {"source": sources["search_summary"]["name"], "score": hs["score"], "reasons": hs["reasons"]}
+    for key, sid in (("_rask", "rask"), ("_github", "github_api")):
+        if sid in sources:
+            tr = trust_score(sources[sid], None)
+            trust[key] = {"source": sources[sid].get("name", sid), "score": tr["score"], "reasons": tr["reasons"]}
     if "ato" in sources:
         # Tax rates were confirmed on two ATO pages that agree (rates page + tax-cut page) -> cross-checked.
         at = trust_score(sources["ato"], True)
@@ -100,6 +107,15 @@ def run(provider, etfs, out_dir, now, sources=None, second_price=None):
                 divs_out[t] = dv
             except Exception:
                 pass   # keep the previous dividend entry; prices are unaffected
+            try:
+                hv = provider.holdings(t)
+                hs = summarize_holdings(*hv) if hv else None
+                if hs:
+                    ht = trust_score(sources["yahoo"], None)
+                    hs["trust"] = {"source": sources["yahoo"].get("name", "yahoo"), "score": ht["score"], "reasons": ht["reasons"]}
+                    hold_out[t] = hs
+            except Exception:
+                pass   # keep the previous holdings entry; prices are unaffected
             trust[t] = {"price": {"source": psrc.get("name", "yahoo"), "score": pt["score"],
                                   "reasons": pt["reasons"], "crosscheck": cc["ok"], "gap": cc["gap"],
                                   "checked_against": "ASX website data service" if cc["ok"] is not None else None},
@@ -107,7 +123,7 @@ def run(provider, etfs, out_dir, now, sources=None, second_price=None):
         except Exception:   # one bad ticker must never stop the whole daily run
             failed.append(t)
     if len(failed) < len(etfs):
-        for n, v in (("prices", prices), ("metrics", metrics), ("scenarios", scen), ("trust", trust), ("dividends", divs_out)):
+        for n, v in (("prices", prices), ("metrics", metrics), ("scenarios", scen), ("trust", trust), ("dividends", divs_out), ("holdings", hold_out)):
             (out / f"{n}.json").write_text(json.dumps(v, separators=(",", ":")))
     meta = _load(out / "meta.json")
     meta_new = {"updated_utc": now.isoformat() if len(failed) < len(etfs) else meta.get("updated_utc"),

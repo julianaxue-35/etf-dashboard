@@ -96,7 +96,7 @@
   },
   "reasons": {
    "primary": "Commentary, not original data.",
-   "independent": "Hosts may have commercial links to products discussed.",
+   "independent": "Episodes are often sponsored by fund issuers (e.g. Global X) and Rask sells its own products, so advice can favour them.",
    "transparent": "Views are opinions; track record of forecasts is not published.",
    "timely": "Episodes date quickly."
   }
@@ -267,6 +267,23 @@
    "independent": "A mix of media and data sites with different methods.",
    "transparent": "Sources differ on exact figures (price vs total return, close vs intraday).",
    "timely": "Historic events, so not time-sensitive."
+  }
+ },
+ "github_api": {
+  "id": "github_api",
+  "name": "GitHub (repository data)",
+  "type": "primary",
+  "url": "https://github.com",
+  "scores": {
+   "primary": 30,
+   "independent": 18,
+   "transparent": 18,
+   "timely": 14
+  },
+  "reasons": {
+   "independent": "Stars and descriptions are set by the projects and their fans; popularity is not quality.",
+   "transparent": "Code is public, but I have not audited it or run it.",
+   "timely": "Snapshot taken on the date shown; projects change."
   }
  }
 }

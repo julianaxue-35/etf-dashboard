@@ -49,3 +49,14 @@ def test_longest_underwater_days():
     assert longest_underwater_days(d, [100, 101, 102, 103, 104]) == 0     # never below a prior peak
     assert longest_underwater_days(d, [100, 110, 90, 80, 85]) == 3        # still under water at the end (Jan 2 -> Jan 5)
     assert longest_underwater_days(["2026-01-01"], [100]) is None
+
+
+from etf.metrics import ma_gap, trailing_return
+
+def test_ma_gap_and_trailing_return():
+    p = list(range(1, 11))                                  # 1..10
+    assert abs(ma_gap(p, 5) - (10 / 8 - 1)) < 1e-9          # mean of last 5 = 8
+    assert ma_gap([1, 2], 5) is None
+    assert abs(trailing_return([100, 110, 121], 2) - 0.21) < 1e-9
+    assert trailing_return([100, 110], 5) is None
+    assert ma_gap([0, 0, 0], 2) is None                     # bad prices dropped -> not enough data

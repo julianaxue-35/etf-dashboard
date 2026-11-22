@@ -1,0 +1,162 @@
+{
+ "retrieved": "2026-11-22",
+ "source_note": "Facts from the GitHub API on this date. Nothing here has been installed or run. Popularity is not quality.",
+ "items": [
+  {
+   "name": "yfinance",
+   "repo": "ranaroussi/yfinance",
+   "stars": 25982,
+   "pushed": "2026-11-21",
+   "license": "Apache-2.0",
+   "what": "Downloads market data from Yahoo Finance.",
+   "fit": "Already used by this dashboard for prices, dividends and holdings.",
+   "effort": "Done",
+   "verdict": "In use",
+   "note": "Unofficial: can break. That is why prices are cross-checked against the ASX."
+  },
+  {
+   "name": "PyPortfolioOpt",
+   "repo": "PyPortfolio/PyPortfolioOpt",
+   "stars": 6177,
+   "pushed": "2026-07-07",
+   "license": "MIT",
+   "what": "Works out how to split money across funds to balance risk and return.",
+   "fit": "Useful later for a 'how much in each fund' suggestion.",
+   "effort": "Low (Python library)",
+   "verdict": "Maybe later",
+   "note": "Needs good return estimates; past returns are a weak guide, so treat output as a starting point."
+  },
+  {
+   "name": "QuantStats",
+   "repo": "ranaroussi/quantstats",
+   "stars": 7902,
+   "pushed": "2026-11-02",
+   "license": "Apache-2.0",
+   "what": "Portfolio risk and return reports (drawdowns, volatility, Sharpe ratio).",
+   "fit": "Overlaps what this dashboard already computes; could add polished report pages.",
+   "effort": "Low",
+   "verdict": "Maybe later",
+   "note": "Nice extras, little new insight."
+  },
+  {
+   "name": "Riskfolio-Lib",
+   "repo": "dcajasn/Riskfolio-Lib",
+   "stars": 4619,
+   "pushed": "2026-11-04",
+   "license": "BSD-3-Clause",
+   "what": "Advanced portfolio optimisation and risk measures.",
+   "fit": "More than you need for a few ETFs.",
+   "effort": "Medium",
+   "verdict": "Skip for now",
+   "note": "Powerful, but complexity can give false confidence."
+  },
+  {
+   "name": "ffn",
+   "repo": "pmorissette/ffn",
+   "stars": 2697,
+   "pushed": "2026-11-19",
+   "license": "MIT",
+   "what": "Finance helper functions (returns, drawdowns, comparisons).",
+   "fit": "Same ground as the metrics already built.",
+   "effort": "Low",
+   "verdict": "Skip",
+   "note": "Nothing new."
+  },
+  {
+   "name": "Portfolio Performance",
+   "repo": "portfolio-performance/portfolio",
+   "stars": 4183,
+   "pushed": "2026-11-20",
+   "license": "EPL-1.0",
+   "what": "Desktop app to track what you own, performance, dividends and taxes.",
+   "fit": "Good for tracking real holdings once you buy. This dashboard deliberately stores none of your holdings.",
+   "effort": "Medium (install a desktop app; ask IT first)",
+   "verdict": "Worth a look after you buy",
+   "note": "Check how it handles Australian tax before relying on it."
+  },
+  {
+   "name": "Ghostfolio",
+   "repo": "ghostfolio/ghostfolio",
+   "stars": 9756,
+   "pushed": "2026-11-21",
+   "license": "AGPL-3.0",
+   "what": "Self-hosted wealth tracker with a web interface.",
+   "fit": "Similar to this dashboard but tracks your holdings.",
+   "effort": "High (needs Docker and a database)",
+   "verdict": "Skip for now",
+   "note": "Docker needs IT sign-off, and holdings are personal data."
+  },
+  {
+   "name": "OpenBB",
+   "repo": "openbq-org/OpenBB (moved from OpenBB-finance)",
+   "stars": 75635,
+   "pushed": "2026-11-18",
+   "license": "Not clearly stated (NOASSERTION)",
+   "what": "Open data platform for analysts, with many data sources and tools.",
+   "fit": "Heavy; a data hub rather than an ETF dashboard.",
+   "effort": "High",
+   "verdict": "Skip",
+   "note": "Licence unclear. Check the terms before building on it."
+  },
+  {
+   "name": "vectorbt",
+   "repo": "polakowo/vectorbt",
+   "stars": 9911,
+   "pushed": "2026-11-11",
+   "license": "Not clearly stated (NOASSERTION)",
+   "what": "Fast testing of trading strategies on past prices.",
+   "fit": "Built for active trading, not buy-and-hold.",
+   "effort": "Medium",
+   "verdict": "Skip",
+   "note": "Backtests often look better than real results."
+  },
+  {
+   "name": "backtrader",
+   "repo": "mementum/backtrader",
+   "stars": 23775,
+   "pushed": "2024-08-19",
+   "license": "GPL-3.0",
+   "what": "Older library for testing trading strategies.",
+   "fit": "Not for buy-and-hold investing.",
+   "effort": "Medium",
+   "verdict": "Skip",
+   "note": "No updates for over 2 years."
+  },
+  {
+   "name": "Prophet",
+   "repo": "meta/prophet",
+   "stars": 20495,
+   "pushed": "2026-11-11",
+   "license": "MIT",
+   "what": "Forecasts time series with trends and seasons.",
+   "fit": "Tempting for 'predict the ETF', but markets are not seasonal patterns.",
+   "effort": "Low",
+   "verdict": "Avoid for prices",
+   "note": "Would give confident-looking but unreliable price forecasts; that is why this dashboard shows ranges instead."
+  },
+  {
+   "name": "FinRL",
+   "repo": "AI4Finance-Foundation/FinRL",
+   "stars": 17161,
+   "pushed": "2026-11-18",
+   "license": "MIT",
+   "what": "Reinforcement-learning research for trading.",
+   "fit": "Research toy, not for long-term investing.",
+   "effort": "High",
+   "verdict": "Avoid",
+   "note": "No reliable evidence it beats simple investing after costs."
+  },
+  {
+   "name": "AI Hedge Fund",
+   "repo": "virattt/ai-hedge-fund",
+   "stars": 64807,
+   "pushed": "2026-11-09",
+   "license": "MIT",
+   "what": "Experiment where AI agents discuss stocks.",
+   "fit": "Educational demo, not advice.",
+   "effort": "Medium",
+   "verdict": "Avoid",
+   "note": "High stars reflect hype. The project itself is a learning demo."
+  }
+ ]
+}

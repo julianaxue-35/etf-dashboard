@@ -5,6 +5,7 @@ const store = makeStore(window.localStorage || { getItem() { throw 0; }, setItem
 const TABS = [
   { id: 'today', label: 'Today', mod: './tab-today.js' },
   { id: 'news', label: 'News', mod: './tab-news.js' },
+  { id: 'funds', label: 'Funds', mod: './tab-funds.js' },
   { id: 'compare', label: 'Compare', mod: './tab-compare.js' },
   { id: 'dividends', label: 'Dividends', mod: './tab-dividends.js' },
   { id: 'scenarios', label: 'Scenarios', mod: './tab-scenarios.js' },
@@ -12,18 +13,21 @@ const TABS = [
   { id: 'risk', label: 'Risk', mod: './tab-risk.js' },
   { id: 'aftertax', label: 'After-tax', mod: './tab-aftertax.js' },
   { id: 'plan', label: 'Plan', mod: './tab-plan.js' },
+  { id: 'research', label: 'Research', mod: './tab-research.js' },
 ];
 const $ = id => document.getElementById(id);
 
 async function loadData() {
   const get = n => fetch(`data/${n}.json`, { cache: 'no-cache' }).then(r => r.json());
-  const [prices, metrics, scenarios, meta, trust, dividends] = await Promise.all(
-    ['prices', 'metrics', 'scenarios', 'meta', 'trust', 'dividends'].map(get));
+  const [prices, metrics, scenarios, meta, trust, dividends, holdings] = await Promise.all(
+    ['prices', 'metrics', 'scenarios', 'meta', 'trust', 'dividends', 'holdings'].map(get));
+  const cfg = n => fetch(`config/${n}.json`).then(r => r.json());
+  const [rules, rask, tools] = await Promise.all(['signal_rules', 'rask_notes', 'github_tools'].map(cfg));
   const stress = await fetch('config/history_stress.json').then(r => r.json()).catch(() => []);
   const news = await fetch('data/news.json', { cache: 'no-cache' }).then(r => r.json()).catch(() => null);
   const etfs = await fetch('config/etfs.json').then(r => r.json());
   const tax = await fetch('config/tax.json').then(r => r.json());
-  return { prices, metrics, scenarios, meta, trust, dividends, news, stress, etfs, tax };
+  return { prices, metrics, scenarios, meta, trust, dividends, holdings, rules, rask, tools, news, stress, etfs, tax };
 }
 
 async function show(ctx, id) {

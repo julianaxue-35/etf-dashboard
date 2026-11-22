@@ -10,7 +10,8 @@
   "fee_url": "https://www.betashares.com.au/fund/betashares-australia-200-etf/",
   "franking_pct": 0.713,
   "franking_check": "issuer_page_via_search",
-  "franking_url": "https://www.betashares.com.au/fund/australia-200-etf/"
+  "franking_url": "https://www.betashares.com.au/fund/australia-200-etf/",
+  "region": "au"
  },
  {
   "ticker": "VAS",
@@ -22,7 +23,8 @@
   "fee_check": "issuer_page_via_search",
   "fee_url": "https://www.vanguard.com.au/adviser/invest/etf?portId=8205",
   "franking_pct": 0.7,
-  "franking_check": "assumed"
+  "franking_check": "assumed",
+  "region": "au"
  },
  {
   "ticker": "VGS",
@@ -34,7 +36,8 @@
   "fee_check": "issuer_page_via_search",
   "fee_url": "https://www.vanguard.com.au/adviser/invest/etf?portId=8212",
   "franking_pct": 0.0,
-  "franking_check": "assumed_overseas"
+  "franking_check": "assumed_overseas",
+  "region": "global"
  },
  {
   "ticker": "VDHG",
@@ -46,7 +49,8 @@
   "fee_check": "issuer_page_via_search",
   "fee_url": "https://www.vanguard.com.au/personal/invest-with-us/etf?portId=8221",
   "franking_pct": 0.0,
-  "franking_check": "assumed_varies"
+  "franking_check": "assumed_varies",
+  "region": "mixed"
  },
  {
   "ticker": "IVV",
@@ -58,7 +62,8 @@
   "fee_check": "issuer_page_via_search",
   "fee_url": "https://www.blackrock.com/au/products/275304/",
   "franking_pct": 0.0,
-  "franking_check": "assumed_overseas"
+  "franking_check": "assumed_overseas",
+  "region": "us"
  },
  {
   "ticker": "NDQ",
@@ -70,7 +75,8 @@
   "fee_check": "issuer_page",
   "fee_url": "https://www.betashares.com.au/fund/nasdaq-100-etf/",
   "franking_pct": 0.0,
-  "franking_check": "assumed_overseas"
+  "franking_check": "assumed_overseas",
+  "region": "us"
  },
  {
   "ticker": "SEMI",
@@ -82,7 +88,8 @@
   "fee_check": "issuer_page",
   "fee_url": "https://www.globalxetfs.com.au/funds/semi/",
   "franking_pct": 0.0,
-  "franking_check": "assumed_overseas"
+  "franking_check": "assumed_overseas",
+  "region": "global"
  },
  {
   "ticker": "RBTZ",
@@ -94,7 +101,8 @@
   "fee_check": "issuer_page",
   "fee_url": "https://www.betashares.com.au/fund/global-robotics-and-artificial-intelligence-etf/",
   "franking_pct": 0.0,
-  "franking_check": "assumed_overseas"
+  "franking_check": "assumed_overseas",
+  "region": "global"
  },
  {
   "ticker": "TECH",
@@ -106,7 +114,8 @@
   "fee_check": "issuer_page",
   "fee_url": "https://www.globalxetfs.com.au/funds/tech/",
   "franking_pct": 0.0,
-  "franking_check": "assumed_overseas"
+  "franking_check": "assumed_overseas",
+  "region": "global"
  },
  {
   "ticker": "IXJ",
@@ -118,7 +127,8 @@
   "fee_check": "issuer_page_via_search",
   "fee_url": "https://blackrock.com/au/individual/products/273430",
   "franking_pct": 0.0,
-  "franking_check": "assumed_overseas"
+  "franking_check": "assumed_overseas",
+  "region": "global"
  },
  {
   "ticker": "HLTH",
@@ -130,7 +140,8 @@
   "fee_check": "issuer_page",
   "fee_url": "https://www.vaneck.com.au/etf/equity/hlth/snapshot/",
   "franking_pct": 0.0,
-  "franking_check": "assumed_overseas"
+  "franking_check": "assumed_overseas",
+  "region": "global"
  },
  {
   "ticker": "IFRA",
@@ -142,7 +153,8 @@
   "fee_check": "issuer_page",
   "fee_url": "https://www.vaneck.com.au/etf/equity/ifra/snapshot/",
   "franking_pct": 0.0,
-  "franking_check": "assumed_overseas"
+  "franking_check": "assumed_overseas",
+  "region": "global_hedged"
  },
  {
   "ticker": "GLIN",
@@ -154,7 +166,8 @@
   "fee_check": "issuer_page_via_search",
   "fee_url": "https://www.blackrock.com/au/products/331650/",
   "franking_pct": 0.0,
-  "franking_check": "assumed_overseas"
+  "franking_check": "assumed_overseas",
+  "region": "global_hedged"
  },
  {
   "ticker": "CSL",
@@ -165,7 +178,8 @@
   "notes": "Single stock, reference only (held inside A200, VAS, healthcare ETFs)",
   "fee_check": "n/a",
   "franking_pct": null,
-  "franking_check": "stock_check_statement"
+  "franking_check": "stock_check_statement",
+  "region": "au"
  },
  {
   "ticker": "TCL",
@@ -176,7 +190,8 @@
   "notes": "Single stock, infrastructure reference",
   "fee_check": "n/a",
   "franking_pct": null,
-  "franking_check": "stock_check_statement"
+  "franking_check": "stock_check_statement",
+  "region": "au"
  },
  {
   "ticker": "APA",
@@ -187,7 +202,8 @@
   "notes": "Single stock, infrastructure reference",
   "fee_check": "n/a",
   "franking_pct": null,
-  "franking_check": "stock_check_statement"
+  "franking_check": "stock_check_statement",
+  "region": "au"
  },
  {
   "ticker": "MQG",
@@ -198,6 +214,7 @@
   "notes": "Single stock, infrastructure reference",
   "fee_check": "n/a",
   "franking_pct": null,
-  "franking_check": "stock_check_statement"
+  "franking_check": "stock_check_statement",
+  "region": "au"
  }
 ]

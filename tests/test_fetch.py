@@ -116,3 +116,27 @@ def test_history_trust_entry_written(tmp_path):
     fetch.run(FakeProvider({"AAA": series()}), etfs, tmp_path, NOW)
     t = json.loads((tmp_path / "trust.json").read_text())["_history"]
     assert 50 <= t["score"] < 100 and t["reasons"]
+
+
+def test_holdings_written_and_failure_tolerated(tmp_path):
+    class P(FakeProvider):
+        def holdings(self, ticker):
+            if ticker == "BBB":
+                raise RuntimeError("no fund data")
+            return [("Big Co", 0.2), ("Small Co", 0.05)], {"technology": 0.6}
+    etfs = [{"ticker": "AAA", "category": "core", "fee_pct": 0.1, "fee_check": "n/a"},
+            {"ticker": "BBB", "category": "reference", "fee_pct": 0.0, "fee_check": "n/a"}]
+    fetch.run(P({"AAA": series(), "BBB": series()}), etfs, tmp_path, dt.datetime(2026, 11, 22))
+    h = json.loads((tmp_path / "holdings.json").read_text())
+    assert h["AAA"]["incomplete"] is True and h["AAA"]["top10_pct"] is None and h["AAA"]["trust"]["score"] < 100
+    assert "BBB" not in h
+    m = json.loads((tmp_path / "metrics.json").read_text())["AAA"]
+    assert "ma200_gap" in m and "ret_12m" in m
+
+
+def test_research_trust_entries(tmp_path):
+    etfs = [{"ticker": "AAA", "category": "core", "fee_pct": 0.1, "fee_check": "n/a"}]
+    fetch.run(FakeProvider({"AAA": series()}), etfs, tmp_path, NOW)
+    t = json.loads((tmp_path / "trust.json").read_text())
+    assert t["_rask"]["score"] <= 60 and any("pinion" in r for r in t["_rask"]["reasons"])
+    assert 60 < t["_github"]["score"] < 100

@@ -13,6 +13,9 @@ class FakeProvider:
     def dividends(self, ticker):
         return []
 
+    def holdings(self, ticker):
+        return None
+
     def history(self, ticker, years=10):
         if ticker not in self.data:
             raise ProviderError(f"no data for {ticker}")
@@ -41,3 +44,16 @@ class YahooProvider:
         except Exception as e:
             raise ProviderError(str(e))
         return [(d.date().isoformat(), float(v)) for d, v in s.items()]
+
+    def holdings(self, ticker):
+        """Top holdings [(name, fraction)] and sector weights {sector: fraction}. Same unofficial source."""
+        import yfinance as yf
+        try:
+            fd = yf.Ticker(ticker + ".AX").funds_data
+            th, sw = fd.top_holdings, fd.sector_weightings
+            col = [c for c in th.columns if "ercent" in c][0]
+            name = "Name" if "Name" in th.columns else None
+            rows = [((r[name] if name else i), float(r[col])) for i, r in th.iterrows()]
+            return rows, dict(sw or {})
+        except Exception as e:
+            raise ProviderError(str(e))

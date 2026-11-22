@@ -45,3 +45,13 @@ test('toneSummary', () => {
   assert.deepEqual(toneSummary(items), { negative: 2, positive: 1, neutral: 0, total: 3 });
   assert.deepEqual(toneSummary([]), { negative: 0, positive: 0, neutral: 0, total: 0 });
 });
+
+import { specificNews } from '../js/news.js';
+
+test('specificNews drops stories that apply to nearly every fund', () => {
+  const all = { title: 'selloff', tickers: Array.from({ length: 12 }, (_, i) => 'T' + i) };
+  const few = { title: 'nvidia', tickers: ['NDQ', 'SEMI'] };
+  assert.deepEqual(specificNews([all, few], 13).map(i => i.title), ['nvidia']);
+  assert.deepEqual(specificNews([all, few], 13, 0.99).map(i => i.title), ['selloff', 'nvidia']);
+  assert.deepEqual(specificNews(null, 13), []);
+});

@@ -30,3 +30,8 @@ export function toneSummary(items) {
   for (const i of items || []) { out[i.tone in out ? i.tone : 'neutral']++; out.total++; }
   return out;
 }
+
+// Stories tagged to (almost) every fund say something about the whole market, not about one fund.
+export function specificNews(items, totalFunds, share = 0.8) {
+  return (items || []).filter(i => (i.tickers || []).length < totalFunds * share);
+}
