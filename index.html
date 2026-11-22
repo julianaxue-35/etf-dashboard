@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ETF Dashboard</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="gate"><form class="box" id="gateform">
+  <h1>ETF Dashboard</h1><p class="sub">Enter passcode</p>
+  <input id="pass" type="password" autocomplete="current-password" aria-label="Passcode">
+  <div class="err" id="gateerr" role="alert"></div>
+  <button type="submit">Open</button>
+</form></div>
+<div id="app" hidden>
+<header><div class="wrap">
+  <h1>ETF Dashboard</h1>
+  <div class="sub"><span id="updated"></span> · v<span id="ver"></span> · Not personal financial advice</div>
+  <div id="stale" class="banner" hidden></div>
+  <nav id="nav" aria-label="Sections"></nav>
+</div></header>
+<main class="wrap" id="view"></main>
+<footer class="wrap">Scores out of 100 are a transparent rubric of source reliability, not objective truth. Projections are ranges from past returns, not predictions; past performance does not guarantee future results. Tax figures are estimates: confirm with an accountant. © Juliana Xue. All rights reserved.</footer>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
