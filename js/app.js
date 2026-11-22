@@ -8,6 +8,7 @@ const TABS = [
   { id: 'scenarios', label: 'Scenarios', mod: './tab-scenarios.js' },
   { id: 'dips', label: 'Dips', mod: './tab-dips.js' },
   { id: 'aftertax', label: 'After-tax', mod: './tab-aftertax.js' },
+  { id: 'plan', label: 'Plan', mod: './tab-plan.js' },
 ];
 const $ = id => document.getElementById(id);
 
