@@ -5,6 +5,8 @@ const store = makeStore(window.localStorage || { getItem() { throw 0; }, setItem
 const TABS = [
   { id: 'today', label: 'Today', mod: './tab-today.js' },
   { id: 'compare', label: 'Compare', mod: './tab-compare.js' },
+  { id: 'scenarios', label: 'Scenarios', mod: './tab-scenarios.js' },
+  { id: 'dips', label: 'Dips', mod: './tab-dips.js' },
 ];
 const $ = id => document.getElementById(id);
 

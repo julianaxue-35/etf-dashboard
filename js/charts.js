@@ -26,9 +26,11 @@ export function lineChart(canvas, series, yTitle) {
   opts.elements = { point: { radius: 0 }, line: { borderWidth: 2 } };
   opts.interaction = { mode: 'index', intersect: false };
   const labels = series[0] ? series[0].dates : [];
-  return mount(canvas, { type: 'line', data: { labels, datasets: series.map((s, i) => ({
-    label: s.label, data: s.values, borderColor: pal[i % pal.length], backgroundColor: pal[i % pal.length],
-    borderDash: i >= pal.length ? [5, 4] : [] })) }, options: opts });
+  const linear = !!(series[0] && series[0].xs);   // true numeric time axis (e.g. years)
+  if (linear) { opts.scales.x.type = 'linear'; opts.scales.x.ticks.callback = v => v + (series[0].xunit || ''); opts.scales.x.ticks.maxTicksLimit = 11; opts.scales.x.min = 0; }
+  return mount(canvas, { type: 'line', data: { labels: linear ? undefined : labels, datasets: series.map((s, i) => ({
+    label: s.label, data: linear ? s.values.map((v, j) => ({ x: s.xs[j], y: v })) : s.values, borderColor: pal[i % pal.length], backgroundColor: pal[i % pal.length],
+    borderDash: s.dash ? [6, 4] : [], borderWidth: s.dash ? 1.5 : 2, borderColor: s.color || pal[i % pal.length], backgroundColor: s.color || pal[i % pal.length] })) }, options: opts });
 }
 export function barChart(canvas, labels, values, { color, title, horizontal = true, fmt = v => v } = {}) {
   const { opts } = base();
