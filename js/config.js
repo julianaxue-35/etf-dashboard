@@ -1,2 +1,2 @@
 export const PASSCODE_HASH = 'a5b3da363815ca59c76b6b90fa8632c396328033b1c2ecd16415755894e5aeca';
-export const APP_VERSION = '2026-11-22.2';
+export const APP_VERSION = '2026-11-22.3';

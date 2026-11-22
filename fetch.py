@@ -7,6 +7,7 @@ from etf.scenarios import scenario_bands
 from etf.provider import YahooProvider, ProviderError
 from etf.trust import trust_score
 from etf.crosscheck import crosscheck, asx_last_price
+from etf.dividends import summarize
 
 ROOT = pathlib.Path(__file__).resolve().parent
 HORIZONS = [0.5, 1, 3, 5, 10]
@@ -54,6 +55,7 @@ def run(provider, etfs, out_dir, now, sources=None, second_price=None):
     if sources is None:
         sources = _load(ROOT / "config/sources.json")
     trust = _load(out / "trust.json")
+    divs_out = _load(out / "dividends.json")
     if "ato" in sources:
         # Tax rates were confirmed on two ATO pages that agree (rates page + tax-cut page) -> cross-checked.
         at = trust_score(sources["ato"], True)
@@ -78,6 +80,18 @@ def run(provider, etfs, out_dir, now, sources=None, second_price=None):
                 ft = trust_score(sources[fsrc], None)
                 facts = {"source": sources[fsrc].get("name", fsrc), "score": ft["score"],
                          "reasons": ft["reasons"], "url": etf.get("fee_url", "")}
+            try:
+                dv = summarize(provider.dividends(t), closes[-1], now)
+                fr = etf.get("franking_check", "unknown")
+                fsrc2 = {"issuer_page_via_search": "issuer_search"}.get(fr, "assumption")
+                frs = trust_score(sources[fsrc2], None)
+                dv["franking"] = {"value": etf.get("franking_pct"), "check": fr, "source": sources[fsrc2].get("name", fsrc2),
+                                  "score": frs["score"], "reasons": frs["reasons"], "url": etf.get("franking_url", "")}
+                dts = trust_score(sources["yahoo"], None)
+                dv["trust"] = {"source": sources["yahoo"].get("name", "yahoo"), "score": dts["score"], "reasons": dts["reasons"]}
+                divs_out[t] = dv
+            except Exception:
+                pass   # keep the previous dividend entry; prices are unaffected
             trust[t] = {"price": {"source": psrc.get("name", "yahoo"), "score": pt["score"],
                                   "reasons": pt["reasons"], "crosscheck": cc["ok"], "gap": cc["gap"],
                                   "checked_against": "ASX website data service" if cc["ok"] is not None else None},
@@ -85,7 +99,7 @@ def run(provider, etfs, out_dir, now, sources=None, second_price=None):
         except Exception:   # one bad ticker must never stop the whole daily run
             failed.append(t)
     if len(failed) < len(etfs):
-        for n, v in (("prices", prices), ("metrics", metrics), ("scenarios", scen), ("trust", trust)):
+        for n, v in (("prices", prices), ("metrics", metrics), ("scenarios", scen), ("trust", trust), ("dividends", divs_out)):
             (out / f"{n}.json").write_text(json.dumps(v, separators=(",", ":")))
     meta = _load(out / "meta.json")
     meta_new = {"updated_utc": now.isoformat() if len(failed) < len(etfs) else meta.get("updated_utc"),

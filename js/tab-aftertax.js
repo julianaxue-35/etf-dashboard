@@ -4,9 +4,6 @@ import { esc, trustBadge } from './ui.js';
 
 const money = v => '$' + Math.round(v).toLocaleString('en-AU');
 const RATES = [0.08, 0.09, 0.10];
-// ASSUMPTIONS (editable on the page), not data: typical cash yield and franking by fund type.
-const DEFAULTS = { A200: [3.5, 75], VAS: [3.5, 75] };
-const GLOBAL_DEFAULT = [1.5, 0];
 
 export function render(el, ctx) {
   const rules = ctx.tax, funds = ctx.etfs.filter(e => e.category !== 'reference');
@@ -20,8 +17,8 @@ export function render(el, ctx) {
     <div class="row">
     <div><label for="ti">Your other taxable income now ($/yr)</label><input id="ti" type="number" min="0" step="5000" value="${v0.inc}"></div>
     <div><label for="tr">Income in the year you sell ($)</label><input id="tr" type="number" min="0" step="5000" value="${v0.ret}"></div>
-    <div><label for="tdy">Yearly distribution (%) <span class="sub">assumed</span></label><input id="tdy" type="number" min="0" step="0.1"></div>
-    <div><label for="tfr">Franked (%) <span class="sub">assumed</span></label><input id="tfr" type="number" min="0" max="100" step="5"></div></div>
+    <div><label for="tdy">Yearly distribution (%) <span class="sub">last 12 months</span></label><input id="tdy" type="number" min="0" step="0.1"></div>
+    <div><label for="tfr">Franked (%) <span class="sub">see Dividends tab</span></label><input id="tfr" type="number" min="0" max="100" step="5"></div></div>
     <div class="sub" id="msg" role="alert"></div></div>
   <div class="card"><h2>What you keep after tax</h2><div class="chart"><canvas id="c" role="img" aria-label="Value before and after tax"></canvas></div>
     <div class="sub">Source: ATO tax rates ${esc(rules.year)} ${trustBadge(ctx.trust._ato)}</div></div>
@@ -36,7 +33,8 @@ export function render(el, ctx) {
       <li>Rates checked ${esc(rules.checked)} against ato.gov.au. Confirm with an accountant before selling.</li></ul></details></div>`;
   const q = id => el.querySelector('#' + id);
   q('tf').value = funds.some(e => e.ticker === v0.t) ? v0.t : funds[0].ticker;
-  const setDefaults = () => { const d = DEFAULTS[q('tf').value] || GLOBAL_DEFAULT; q('tdy').value = d[0]; q('tfr').value = d[1]; };
+  // Defaults come from the fund's real last-12-month distributions (Dividends tab); franking is the issuer figure or an estimate.
+  const setDefaults = () => { const d = ctx.dividends[q('tf').value]; q('tdy').value = d && d.ttm_yield !== null ? +(d.ttm_yield * 100).toFixed(1) : 0; q('tfr').value = d && d.franking.value ? +(d.franking.value * 100).toFixed(0) : 0; };
   if (v0.y === null) setDefaults(); else { q('tdy').value = v0.y; q('tfr').value = v0.f; }
   const draw = () => {
     const inp = { t: q('tf').value, amt: +q('ta').value, yrs: +q('ty').value, inc: +q('ti').value, ret: +q('tr').value, y: +q('tdy').value, f: +q('tfr').value };

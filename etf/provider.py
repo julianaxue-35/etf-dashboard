@@ -10,6 +10,9 @@ class FakeProvider:
     def __init__(self, data):
         self.data = data
 
+    def dividends(self, ticker):
+        return []
+
     def history(self, ticker, years=10):
         if ticker not in self.data:
             raise ProviderError(f"no data for {ticker}")
@@ -29,3 +32,12 @@ class YahooProvider:
         if len(h) < 2:
             raise ProviderError(f"empty history for {ticker}")
         return [d.date().isoformat() for d in h.index], [float(x) for x in h["Close"]]
+
+    def dividends(self, ticker):
+        """Cash distributions per unit as [(iso_date, amount)]. Same unofficial source as prices."""
+        import yfinance as yf
+        try:
+            s = yf.Ticker(ticker + ".AX").dividends
+        except Exception as e:
+            raise ProviderError(str(e))
+        return [(d.date().isoformat(), float(v)) for d, v in s.items()]

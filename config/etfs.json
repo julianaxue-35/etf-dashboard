@@ -7,7 +7,10 @@
   "fee_verified": true,
   "notes": "ASX 200, franked dividends",
   "fee_check": "issuer_page",
-  "fee_url": "https://www.betashares.com.au/fund/betashares-australia-200-etf/"
+  "fee_url": "https://www.betashares.com.au/fund/betashares-australia-200-etf/",
+  "franking_pct": 0.713,
+  "franking_check": "issuer_page_via_search",
+  "franking_url": "https://www.betashares.com.au/fund/australia-200-etf/"
  },
  {
   "ticker": "VAS",
@@ -17,7 +20,9 @@
   "fee_verified": true,
   "notes": "ASX 300",
   "fee_check": "issuer_page_via_search",
-  "fee_url": "https://www.vanguard.com.au/adviser/invest/etf?portId=8205"
+  "fee_url": "https://www.vanguard.com.au/adviser/invest/etf?portId=8205",
+  "franking_pct": 0.7,
+  "franking_check": "assumed"
  },
  {
   "ticker": "VGS",
@@ -27,7 +32,9 @@
   "fee_verified": true,
   "notes": "Developed markets ex-Australia, unhedged",
   "fee_check": "issuer_page_via_search",
-  "fee_url": "https://www.vanguard.com.au/adviser/invest/etf?portId=8212"
+  "fee_url": "https://www.vanguard.com.au/adviser/invest/etf?portId=8212",
+  "franking_pct": 0.0,
+  "franking_check": "assumed_overseas"
  },
  {
   "ticker": "VDHG",
@@ -37,7 +44,9 @@
   "fee_verified": true,
   "notes": "90/10 growth/defensive, one-fund portfolio",
   "fee_check": "issuer_page_via_search",
-  "fee_url": "https://www.vanguard.com.au/personal/invest-with-us/etf?portId=8221"
+  "fee_url": "https://www.vanguard.com.au/personal/invest-with-us/etf?portId=8221",
+  "franking_pct": 0.0,
+  "franking_check": "assumed_varies"
  },
  {
   "ticker": "IVV",
@@ -47,7 +56,9 @@
   "fee_verified": true,
   "notes": "US large caps",
   "fee_check": "issuer_page_via_search",
-  "fee_url": "https://www.blackrock.com/au/products/275304/"
+  "fee_url": "https://www.blackrock.com/au/products/275304/",
+  "franking_pct": 0.0,
+  "franking_check": "assumed_overseas"
  },
  {
   "ticker": "NDQ",
@@ -57,7 +68,9 @@
   "fee_verified": true,
   "notes": "US tech/AI heavy, concentrated in mega-caps",
   "fee_check": "issuer_page",
-  "fee_url": "https://www.betashares.com.au/fund/nasdaq-100-etf/"
+  "fee_url": "https://www.betashares.com.au/fund/nasdaq-100-etf/",
+  "franking_pct": 0.0,
+  "franking_check": "assumed_overseas"
  },
  {
   "ticker": "SEMI",
@@ -67,7 +80,9 @@
   "fee_verified": true,
   "notes": "AI chip exposure, high volatility",
   "fee_check": "issuer_page",
-  "fee_url": "https://www.globalxetfs.com.au/funds/semi/"
+  "fee_url": "https://www.globalxetfs.com.au/funds/semi/",
+  "franking_pct": 0.0,
+  "franking_check": "assumed_overseas"
  },
  {
   "ticker": "RBTZ",
@@ -77,7 +92,9 @@
   "fee_verified": true,
   "notes": "AI/robotics theme",
   "fee_check": "issuer_page",
-  "fee_url": "https://www.betashares.com.au/fund/global-robotics-and-artificial-intelligence-etf/"
+  "fee_url": "https://www.betashares.com.au/fund/global-robotics-and-artificial-intelligence-etf/",
+  "franking_pct": 0.0,
+  "franking_check": "assumed_overseas"
  },
  {
   "ticker": "TECH",
@@ -87,7 +104,9 @@
   "fee_verified": true,
   "notes": "Global technology",
   "fee_check": "issuer_page",
-  "fee_url": "https://www.globalxetfs.com.au/funds/tech/"
+  "fee_url": "https://www.globalxetfs.com.au/funds/tech/",
+  "franking_pct": 0.0,
+  "franking_check": "assumed_overseas"
  },
  {
   "ticker": "IXJ",
@@ -97,7 +116,9 @@
   "fee_verified": true,
   "notes": "Global healthcare, unhedged",
   "fee_check": "issuer_page_via_search",
-  "fee_url": "https://blackrock.com/au/individual/products/273430"
+  "fee_url": "https://blackrock.com/au/individual/products/273430",
+  "franking_pct": 0.0,
+  "franking_check": "assumed_overseas"
  },
  {
   "ticker": "HLTH",
@@ -107,7 +128,9 @@
   "fee_verified": true,
   "notes": "Global healthcare leaders",
   "fee_check": "issuer_page",
-  "fee_url": "https://www.vaneck.com.au/etf/equity/hlth/snapshot/"
+  "fee_url": "https://www.vaneck.com.au/etf/equity/hlth/snapshot/",
+  "franking_pct": 0.0,
+  "franking_check": "assumed_overseas"
  },
  {
   "ticker": "IFRA",
@@ -117,7 +140,9 @@
   "fee_verified": true,
   "notes": "Listed global infrastructure, hedged",
   "fee_check": "issuer_page",
-  "fee_url": "https://www.vaneck.com.au/etf/equity/ifra/snapshot/"
+  "fee_url": "https://www.vaneck.com.au/etf/equity/ifra/snapshot/",
+  "franking_pct": 0.0,
+  "franking_check": "assumed_overseas"
  },
  {
   "ticker": "GLIN",
@@ -127,7 +152,9 @@
   "fee_verified": true,
   "notes": "Listed since May 2023, under 3 years of history",
   "fee_check": "issuer_page_via_search",
-  "fee_url": "https://www.blackrock.com/au/products/331650/"
+  "fee_url": "https://www.blackrock.com/au/products/331650/",
+  "franking_pct": 0.0,
+  "franking_check": "assumed_overseas"
  },
  {
   "ticker": "CSL",
@@ -136,7 +163,9 @@
   "fee_pct": 0.0,
   "fee_verified": true,
   "notes": "Single stock, reference only (held inside A200, VAS, healthcare ETFs)",
-  "fee_check": "n/a"
+  "fee_check": "n/a",
+  "franking_pct": null,
+  "franking_check": "stock_check_statement"
  },
  {
   "ticker": "TCL",
@@ -145,7 +174,9 @@
   "fee_pct": 0.0,
   "fee_verified": true,
   "notes": "Single stock, infrastructure reference",
-  "fee_check": "n/a"
+  "fee_check": "n/a",
+  "franking_pct": null,
+  "franking_check": "stock_check_statement"
  },
  {
   "ticker": "APA",
@@ -154,7 +185,9 @@
   "fee_pct": 0.0,
   "fee_verified": true,
   "notes": "Single stock, infrastructure reference",
-  "fee_check": "n/a"
+  "fee_check": "n/a",
+  "franking_pct": null,
+  "franking_check": "stock_check_statement"
  },
  {
   "ticker": "MQG",
@@ -163,6 +196,8 @@
   "fee_pct": 0.0,
   "fee_verified": true,
   "notes": "Single stock, infrastructure reference",
-  "fee_check": "n/a"
+  "fee_check": "n/a",
+  "franking_pct": null,
+  "franking_check": "stock_check_statement"
  }
 ]

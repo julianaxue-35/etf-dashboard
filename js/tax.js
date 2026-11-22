@@ -71,3 +71,13 @@ export function superOutcome({ principal, annualReturn, years, preTax = false },
   const net = start * Math.pow(1 + annualReturn * (1 - rules.super_earnings_tax), years);
   return { gross: principal * Math.pow(1 + annualReturn, years), net };
 }
+
+// Cash distributions on a holding for one year, with franking credits. taxPayable < 0 means a refund.
+export function dividendIncome({ amount, yieldPct, frankingPct = 0, otherIncome = 0 }, rules) {
+  if (!Number.isFinite(amount) || amount < 0) throw new Error('Amount cannot be negative.');
+  checkInputs({ principal: amount, years: 1, annualReturn: 0, yieldPct, frankingPct, otherIncome });
+  const cash = amount * yieldPct;
+  const credit = cash * (0.30 / 0.70) * frankingPct;
+  const taxPayable = incomeTax(otherIncome + cash + credit, rules) - incomeTax(otherIncome, rules) - credit;
+  return { cash, credit, taxPayable, netCash: cash - taxPayable };
+}

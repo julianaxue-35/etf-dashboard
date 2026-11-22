@@ -95,3 +95,18 @@ def test_unexpected_error_on_one_ticker_does_not_stop_run(tmp_path):
     m = json.loads((tmp_path / "metrics.json").read_text())
     assert "BBB" in m and "AAA" not in m
     assert json.loads((tmp_path / "meta.json").read_text())["failed"] == ["AAA"]
+
+def test_dividends_written_and_failure_tolerated(tmp_path):
+    class P(FakeProvider):
+        def dividends(self, ticker):
+            if ticker == "BBB":
+                raise RuntimeError("div feed down")
+            return [("2026-07-01", 1.0), ("2026-10-01", 1.0)]
+    etfs = [{"ticker": "AAA", "category": "core", "fee_pct": 0.1, "fee_check": "n/a", "franking_pct": 0.7, "franking_check": "assumed"},
+            {"ticker": "BBB", "category": "tech", "fee_pct": 0.5, "fee_check": "n/a"}]
+    fetch.run(P({"AAA": series(), "BBB": series()}), etfs, tmp_path, dt.datetime(2026, 11, 22))
+    d = json.loads((tmp_path / "dividends.json").read_text())
+    assert d["AAA"]["ttm_amount"] == 2.0 and d["AAA"]["franking"]["value"] == 0.7
+    assert d["AAA"]["franking"]["score"] < 50 and d["AAA"]["franking"]["reasons"]
+    assert "BBB" not in d
+    assert sorted(json.loads((tmp_path / "meta.json").read_text())["failed"]) == []   # price data still fine

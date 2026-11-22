@@ -85,3 +85,24 @@ test('input validation: franking, yield, income, years cap', () => {
   assert.doesNotThrow(() => afterTaxOutcome({ ...ok, years: 100 }, R));
   assert.throws(() => superOutcome({ principal: 1, annualReturn: 0.05, years: 1000 }, R), /100 or fewer/i);
 });
+
+import { dividendIncome } from '../js/tax.js';
+
+test('dividendIncome: franked distribution at 32% marginal rate', () => {
+  const d = dividendIncome({ amount: 100000, yieldPct: 0.04, frankingPct: 1, otherIncome: 100000 }, R);
+  close(d.cash, 4000, 0.01); close(d.credit, 1714.29, 0.01);
+  close(d.taxPayable, 114.29, 0.05); close(d.netCash, 3885.71, 0.05);
+});
+
+test('dividendIncome: low income gets the franking credit refunded', () => {
+  const d = dividendIncome({ amount: 100000, yieldPct: 0.04, frankingPct: 1, otherIncome: 0 }, R);
+  close(d.netCash, 4000 + 1714.29, 0.05);                  // tax 0, whole credit refunded
+  assert.ok(d.taxPayable < 0);
+});
+
+test('dividendIncome: unfranked and validation', () => {
+  const d = dividendIncome({ amount: 50000, yieldPct: 0.02, frankingPct: 0, otherIncome: 100000 }, R);
+  close(d.cash, 1000, 0.001); assert.equal(d.credit, 0); close(d.taxPayable, 320, 0.01);
+  assert.throws(() => dividendIncome({ amount: -1, yieldPct: 0.02, frankingPct: 0, otherIncome: 0 }, R), /negative/i);
+  assert.throws(() => dividendIncome({ amount: 1000, yieldPct: 0.02, frankingPct: 3, otherIncome: 0 }, R), /franked/i);
+});

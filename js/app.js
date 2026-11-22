@@ -5,6 +5,7 @@ const store = makeStore(window.localStorage || { getItem() { throw 0; }, setItem
 const TABS = [
   { id: 'today', label: 'Today', mod: './tab-today.js' },
   { id: 'compare', label: 'Compare', mod: './tab-compare.js' },
+  { id: 'dividends', label: 'Dividends', mod: './tab-dividends.js' },
   { id: 'scenarios', label: 'Scenarios', mod: './tab-scenarios.js' },
   { id: 'dips', label: 'Dips', mod: './tab-dips.js' },
   { id: 'aftertax', label: 'After-tax', mod: './tab-aftertax.js' },
@@ -14,11 +15,11 @@ const $ = id => document.getElementById(id);
 
 async function loadData() {
   const get = n => fetch(`data/${n}.json`, { cache: 'no-cache' }).then(r => r.json());
-  const [prices, metrics, scenarios, meta, trust] = await Promise.all(
-    ['prices', 'metrics', 'scenarios', 'meta', 'trust'].map(get));
+  const [prices, metrics, scenarios, meta, trust, dividends] = await Promise.all(
+    ['prices', 'metrics', 'scenarios', 'meta', 'trust', 'dividends'].map(get));
   const etfs = await fetch('config/etfs.json').then(r => r.json());
   const tax = await fetch('config/tax.json').then(r => r.json());
-  return { prices, metrics, scenarios, meta, trust, etfs, tax };
+  return { prices, metrics, scenarios, meta, trust, dividends, etfs, tax };
 }
 
 async function show(ctx, id) {
