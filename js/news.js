@@ -32,6 +32,7 @@ export function toneSummary(items) {
 }
 
 // Stories tagged to (almost) every fund say something about the whole market, not about one fund.
-export function specificNews(items, totalFunds, share = 0.8) {
-  return (items || []).filter(i => (i.tickers || []).length < totalFunds * share);
+export function specificNews(items, fundTickers, share = 0.8) {
+  const funds = new Set(fundTickers || []);
+  return (items || []).filter(i => (i.tickers || []).filter(t => funds.has(t)).length < funds.size * share);
 }

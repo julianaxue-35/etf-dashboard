@@ -1,5 +1,5 @@
 import { lineChart, groupedBar } from './charts.js';
-import { monthlyNeeded, balanceAt, rollingDca, buildSchedule } from './contrib.js';
+import { monthlyNeeded, balanceAt, rollingDca, buildSchedule, nextMonthStart } from './contrib.js';
 import { priceBadge, fmtPct, esc } from './ui.js';
 
 const money = v => '$' + Math.round(v).toLocaleString('en-AU');
@@ -26,7 +26,7 @@ export function render(el, ctx) {
     <ul class="tight" id="dl"></ul>
     <div class="sub">Source: <span id="tb"></span></div>
     <details class="more"><summary>More</summary>Tested on every 12-month window in the last 3 years of weekly prices. Spread = one-twelfth bought each month; cash waiting earns nothing here (a savings account would help it slightly). History here is mostly a rising market, which favours lump sums; spreading mainly reduces regret if prices fall soon after you buy.</details></div>
-  <div class="card"><h2>Your 12-month buying plan</h2>
+  <div class="card"><h2>Your buying plan</h2>
     <div class="row"><div><label for="sm">Months to spread over</label><input id="sm" type="number" min="1" max="60" value="12"></div>
     <div><label for="sd">First buy on</label><input id="sd" type="date"></div>
     <div><label for="sb">Brokerage per buy ($) <span class="sub">assumed: check your broker</span></label><input id="sb" type="number" min="0" step="1" value="5"></div></div>
@@ -40,7 +40,7 @@ export function render(el, ctx) {
       <li>You could also keep some cash for the dip levels on the Dips tab and buy extra if prices fall a long way.</li>
       <li>Brokerage is an assumption; many brokers charge per trade, so fewer, larger buys cost less.</li></ul></details></div>`;
   const q = id => el.querySelector('#' + id);
-  { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() + 1); q('sd').value = d.toISOString().slice(0, 10); }
+  q('sd').value = nextMonthStart();
   q('pf').value = funds.some(e => e.ticker === v0.t) ? v0.t : funds[0].ticker;
   const draw = () => {
     const inp = { goal: +q('pg').value, start: +q('ps').value, yrs: +q('py').value, t: q('pf').value, lump: +q('pl').value };

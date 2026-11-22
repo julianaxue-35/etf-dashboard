@@ -140,3 +140,12 @@ def test_research_trust_entries(tmp_path):
     t = json.loads((tmp_path / "trust.json").read_text())
     assert t["_rask"]["score"] <= 60 and any("pinion" in r for r in t["_rask"]["reasons"])
     assert 60 < t["_github"]["score"] < 100
+
+
+def test_holdings_entry_carries_an_as_of_date(tmp_path):
+    class P(FakeProvider):
+        def holdings(self, t):
+            return [(f"S{i}", 0.05) for i in range(10)], {"technology": 0.5}
+    etfs = [{"ticker": "AAA", "category": "core", "fee_pct": 0.1, "fee_check": "n/a"}]
+    fetch.run(P({"AAA": series()}), etfs, tmp_path, dt.datetime(2026, 11, 22))
+    assert json.loads((tmp_path / "holdings.json").read_text())["AAA"]["as_of"] == "2026-11-22"

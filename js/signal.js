@@ -57,6 +57,6 @@ export function prosCons({ etf, metrics, dividends, holdings } = {}, rules) {
   if (num(d.ttm_yield) && d.ttm_yield > 0 && num(fr) && fr >= rules.franked_pro) pros.push(`Dividends carry franking credits (about ${p0(fr)} franked).`);
   if (fund && ['global', 'us', 'global_hedged'].includes(region) && !(num(fr) && fr > 0)) cons.push('No franking credits: overseas shares do not carry them.');
   if (['global', 'us'].includes(region)) cons.push('Currency risk: overseas holdings are not hedged, so a rising Australian dollar can cut returns.');
-  if (num(d.years_cut) && d.years_cut >= 2 && num(d.worst_yoy_change)) cons.push(`Payouts fell in ${d.years_cut} past years (worst drop ${p0(d.worst_yoy_change)}): dividends are not guaranteed.`);
+  if (num(d.years_cut) && d.years_cut >= 2 && num(d.worst_yoy_change)) cons.push(`Payouts fell by more than 5% in ${d.years_cut} of the last ${d.cut_window_years || 10} years (worst drop ${p0(d.worst_yoy_change)}): dividends are not guaranteed.`);
   return { pros, cons };
 }

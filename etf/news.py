@@ -122,10 +122,15 @@ def build_news(raw, sources, rules, etfs, now, max_age_days=7, cap=80, per_sourc
             n = now if now.tzinfo else now.replace(tzinfo=timezone.utc)
             if pub < n - timedelta(days=max_age_days) or pub > n + timedelta(days=1):
                 continue
-            tag = tag_item(it["title"], rules, etfs)
+            title, publisher = it["title"], None
+            if sources.get(sid, {}).get("type") == "aggregator" and " - " in title:    # Google News appends the outlet
+                title, publisher = (x.strip() for x in title.rsplit(" - ", 1))
+            tag = tag_item(title, rules, etfs)
             if not tag["topics"] or not tag["context"]:
                 continue
-            cands.append({**it, **tag, "source_id": sid, "pub": pub})
+            # Identity for cross-checking: the real outlet if known, so two searches finding one outlet's story count once
+            skey = "pub:" + publisher.lower() if publisher else sid
+            cands.append({**it, **tag, "title": title, "publisher": publisher, "skey": skey, "source_id": sid, "pub": pub})
     cands.sort(key=lambda c: c["pub"], reverse=True)
     seen_n, capped = {}, []
     for c in cands:          # no single outlet or search can crowd out the rest
@@ -137,10 +142,10 @@ def build_news(raw, sources, rules, etfs, now, max_age_days=7, cap=80, per_sourc
     for c in cands:
         for cl in clusters:
             if same_story(cl["title"], c["title"]):
-                cl["sources"].add(c["source_id"])
+                cl["sources"].setdefault(c["skey"], c.get("publisher") or sources.get(c["source_id"], {}).get("name", c["source_id"]))
                 break
         else:
-            c["sources"] = {c["source_id"]}
+            c["sources"] = {c["skey"]: c.get("publisher") or sources.get(c["source_id"], {}).get("name", c["source_id"])}
             clusters.append(c)
     default = {"type": "aggregator", "name": "Unrated source", "scores": {"primary": 5, "independent": 5, "transparent": 5, "timely": 5}, "reasons": {}}
     items, by_topic = [], {}
@@ -151,16 +156,13 @@ def build_news(raw, sources, rules, etfs, now, max_age_days=7, cap=80, per_sourc
         reported = len(c["sources"])
         ts = trust_score(src, True if reported >= 2 else None)
         if reported >= 2:
-            others = sorted(sources.get(s, default).get("name", s) for s in c["sources"] if s != c["source_id"])
+            own = c["skey"]
+            others = sorted(name for k, name in c["sources"].items() if k != own)
             ts["reasons"] = [r for r in ts["reasons"] if "cross-checked" not in r]
             also = others
         else:
             also = []
-        title, publisher = c["title"], None
-        if src.get("type") == "aggregator" and " - " in title:     # Google News appends the outlet name
-            title, publisher = title.rsplit(" - ", 1)
-            title, publisher = title.strip(), publisher.strip()
-        items.append({"title": title, "publisher": publisher, "link": c["link"], "source": src.get("name", c["source_id"]),
+        items.append({"title": c["title"], "publisher": c["publisher"], "link": c["link"], "source": src.get("name", c["source_id"]),
                       "source_id": c["source_id"], "published": c["published"], "topics": c["topics"],
                       "tickers": c["tickers"], "tone": c["tone"], "reported_by": reported, "also": also,
                       "trust": {"score": ts["score"], "reasons": ts["reasons"], "source": src.get("name", c["source_id"])}})
@@ -172,7 +174,7 @@ def build_news(raw, sources, rules, etfs, now, max_age_days=7, cap=80, per_sourc
 def http_get(url, timeout=20):
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (etf-dashboard news reader)"})
     with urllib.request.urlopen(req, timeout=timeout) as r:
-        return r.read(MAX_BYTES)
+        return r.read(MAX_BYTES + 1)
 
 
 def refresh(out_path, feeds, sources, rules, etfs, now, get=http_get):
@@ -180,7 +182,10 @@ def refresh(out_path, feeds, sources, rules, etfs, now, get=http_get):
     raw = {}
     for f in feeds:
         try:
-            raw[f["id"]] = parse_feed(get(f["url"]))
+            data = get(f["url"])
+            if len(data) > MAX_BYTES:
+                raise ValueError("feed too large: would be truncated")
+            raw[f["id"]] = parse_feed(data)
         except Exception:
             raw[f["id"]] = None
     if all(v is None for v in raw.values()):

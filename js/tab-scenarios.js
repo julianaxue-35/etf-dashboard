@@ -18,7 +18,7 @@ export function render(el, ctx) {
     <div class="chart"><canvas id="c" role="img" aria-label="Range of possible outcomes over time"></canvas></div>
     <div class="sub">Price history source: <span id="tb"></span></div>
     <div class="sub" id="lim"></div>
-    <div class="banner">These odds come from the last few years of price history, mostly a rising market, so real risk of loss is higher than shown. See the Risk tab for crash tests.</div>
+    <div class="banner">These odds come from this fund's own past prices (up to 10 years, mostly a rising market), so real risk of loss is higher than shown. See the Risk tab for crash tests. * = longer than this fund's data: rough only.</div>
     <details class="more"><summary>More</summary>Bad / good case = 10th / 90th percentile of 5,000 simulated paths built by reshuffling this fund's own past daily returns. Real outcomes can fall outside this range. A short or unusually strong history makes it too optimistic.</details></div>
   <div class="card"><h2>Chances: losing, falling short, reaching your goal</h2><div class="tablewrap"><table id="pt"></table></div></div>`;
   el.querySelector('#sf').value = funds.some(e => e.ticker === t0) ? t0 : funds[0].ticker;
@@ -38,10 +38,10 @@ export function render(el, ctx) {
       { label: '6% savings (capital safe)', dates: lbl, xs, xunit: ' yr', values: hs.map(h => Math.round(amt * Math.pow(1.06, +h))), dash: true, color: '#b3261e' }], 'Value ($)');
     const last = hs[hs.length - 1];
     el.querySelector('#tk').textContent = hs.length
-      ? `${t}: after ${label(last)}, ${money(amt)} could be about ${money(sc[last].p50 * amt)} in the middle case, and ${money(sc[last].p10 * amt)} in a bad case (${money(sc[last].p5 * amt)} in a very bad case). Chance of ending below what you put in: ${lossLabel(sc[last].prob_loss)}. 6% savings would give ${money(amt * Math.pow(1.06, +last))} with no loss.` : 'Not enough history to project.';
+      ? `${t}: after ${label(last)}, ${money(amt)} could be about ${money(sc[last].p50 * amt)} in the middle case, and ${money(sc[last].p10 * amt)} in a bad case (${money(sc[last].p5 * amt)} in a very bad case). Chance of ending below what you put in: ${lossLabel(sc[last].prob_loss)}. 6% in a covered bank deposit would give ${money(amt * Math.pow(1.06, +last))} with no loss.${sc[last].beyond_history ? ' (The longest horizon is longer than this fund\'s data, so it is rough.)' : ''}` : 'Not enough history to project.';
     el.querySelector('#lim').textContent = sc.limited_history ? 'Short history (under 3 years): only up to 1 year shown. Treat with caution.' : '';
     el.querySelector('#pt').innerHTML = '<tr><th>Time</th><th>Lose money</th><th>Worse than 6% savings</th><th>Reaches 8%/yr</th><th>Reaches 10%/yr</th></tr>'
-      + hs.map(h => `<tr><td>${label(h)}</td><td>${lossLabel(sc[h].prob_loss)}</td><td>${fmtPct(sc[h].prob_below_6, 0)}</td><td>${fmtPct(sc[h].prob_reach_8, 0)}</td><td>${fmtPct(sc[h].prob_reach_10, 0)}</td></tr>`).join('');
+      + hs.map(h => `<tr><td>${label(h)}${sc[h].beyond_history ? '*' : ''}</td><td>${lossLabel(sc[h].prob_loss)}</td><td>${fmtPct(sc[h].prob_below_6, 0)}</td><td>${fmtPct(sc[h].prob_reach_8, 0)}</td><td>${fmtPct(sc[h].prob_reach_10, 0)}</td></tr>`).join('');
   };
   el.querySelector('#sf').onchange = draw; el.querySelector('#sa').oninput = draw; draw();
 }

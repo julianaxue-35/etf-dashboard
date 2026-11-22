@@ -48,10 +48,11 @@ test('toneSummary', () => {
 
 import { specificNews } from '../js/news.js';
 
-test('specificNews drops stories that apply to nearly every fund', () => {
-  const all = { title: 'selloff', tickers: Array.from({ length: 12 }, (_, i) => 'T' + i) };
-  const few = { title: 'nvidia', tickers: ['NDQ', 'SEMI'] };
-  assert.deepEqual(specificNews([all, few], 13).map(i => i.title), ['nvidia']);
-  assert.deepEqual(specificNews([all, few], 13, 0.99).map(i => i.title), ['selloff', 'nvidia']);
-  assert.deepEqual(specificNews(null, 13), []);
+test('specificNews drops stories that apply to nearly every fund (reference stocks ignored in the count)', () => {
+  const funds = Array.from({ length: 13 }, (_, i) => 'T' + i);
+  const all = { title: 'selloff', tickers: [...funds.slice(0, 12), 'CSL', 'MQG'] };      // 12 funds + 2 stocks
+  const few = { title: 'nvidia', tickers: ['T1', 'T2', 'CSL', 'MQG', 'TCL', 'APA'] };    // 2 funds + 4 stocks: must stay specific
+  assert.deepEqual(specificNews([all, few], funds).map(i => i.title), ['nvidia']);
+  assert.deepEqual(specificNews([all, few], funds, 0.99).map(i => i.title), ['selloff', 'nvidia']);
+  assert.deepEqual(specificNews(null, funds), []);
 });

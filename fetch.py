@@ -112,6 +112,7 @@ def run(provider, etfs, out_dir, now, sources=None, second_price=None):
                 hs = summarize_holdings(*hv) if hv else None
                 if hs:
                     ht = trust_score(sources["yahoo"], None)
+                    hs["as_of"] = now.date().isoformat()
                     hs["trust"] = {"source": sources["yahoo"].get("name", "yahoo"), "score": ht["score"], "reasons": ht["reasons"]}
                     hold_out[t] = hs
             except Exception:

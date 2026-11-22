@@ -9,18 +9,21 @@ const ICON = { Keep: '✔', Watch: '●', Review: '▲', Unknown: '?' };
 export function render(el, ctx) {
   const funds = ctx.etfs.filter(e => ctx.metrics[e.ticker]);
   const levels = (ctx.store.get('dip:levels', [15, 25, 35]) || [15, 25, 35]).map(v => -v / 100);
-  const nFunds = ctx.etfs.filter(e => e.category !== 'reference').length;
-  const allNews = (ctx.news || {}).items || [];
-  const specific = specificNews(allNews, nFunds);
+  const fundTickers = ctx.etfs.filter(e => e.category !== 'reference').map(e => e.ticker);
+  const newsAgeH = (ctx.news || {}).updated_utc ? (Date.now() - Date.parse(ctx.news.updated_utc + 'Z')) / 3600000 : Infinity;
+  const newsStale = newsAgeH > 48;                       // old stories must not keep counting against a fund
+  const allNews = newsStale ? [] : ((ctx.news || {}).items || []);
+  const specific = specificNews(allNews, fundTickers);
   const marketNeg = allNews.filter(i => i.tone === 'negative' && !specific.includes(i)).length;
   const sig = {};
   for (const e of funds) sig[e.ticker] = fundSignal({ ticker: e.ticker, metrics: ctx.metrics[e.ticker], news: specific, dipLevels: levels, trustPrice: ctx.trust[e.ticker] && ctx.trust[e.ticker].price }, ctx.rules);
   const count = l => funds.filter(e => sig[e.ticker].level === l).length;
+  const cls = l => ({ Keep: 'good', Watch: 'mid', Review: 'bad' }[l] || '');
   const colour = l => ({ Keep: css('--good'), Watch: css('--mid'), Review: css('--bad') }[l] || css('--muted'));
   const sorted = [...funds].sort((a, b) => ctx.metrics[a.ticker].drawdown_from_peak - ctx.metrics[b.ticker].drawdown_from_peak);
   const v0 = ctx.store.get('funds:t', 'A200');
   el.innerHTML = `
-  <div class="takeaway">${count('Keep')} funds look fine to keep, ${count('Watch')} to watch, ${count('Review')} to review. These are rules-based flags for a long-term investor, not advice to buy or sell.${marketNeg ? ` Market-wide there are ${marketNeg} negative stories this week (see News); they are not counted against individual funds.` : ''}</div>
+  <div class="takeaway">${count('Keep')} of these funds and stocks look fine to keep, ${count('Watch')} to watch, ${count('Review')} to review${count('Unknown') ? `, ${count('Unknown')} without enough data` : ''}. These are rules-based flags for a long-term investor, not advice to buy or sell.${newsStale ? ' News is over 2 days old, so it was ignored.' : ''}${marketNeg ? ` Market-wide there are ${marketNeg} negative stories this week (see News); they are not counted against individual funds.` : ''}</div>
   <div class="card"><h2>How far below the peak, coloured by signal</h2>
     <div class="chart" style="height:${Math.max(260, sorted.length * 24)}px"><canvas id="c1" role="img" aria-label="Fall from peak by fund, coloured by signal"></canvas></div>
     <div class="sub"><span class="good">✔ Keep</span> · <span class="mid">● Watch</span> · <span class="bad">▲ Review</span> (symbol and colour)</div>
@@ -36,14 +39,14 @@ export function render(el, ctx) {
   <div class="card"><h2>What it holds</h2><div id="hold"></div><div class="chart" id="hw"><canvas id="c2" role="img" aria-label="Top holdings"></canvas></div><div class="sub" id="hs"></div></div>`;
   const q = id => el.querySelector('#' + id);
   barChart(q('c1'), sorted.map(e => e.ticker), sorted.map(e => +(ctx.metrics[e.ticker].drawdown_from_peak * 100).toFixed(1)), { title: '% below 3-year peak', fmt: v => v + '%', color: sorted.map(e => colour(sig[e.ticker].level)) });
-  q('tbl').innerHTML = '<tr><th>Fund</th><th>Signal</th><th>Main reason</th></tr>' + sorted.map(e => `<tr><td><b>${esc(e.ticker)}</b></td><td class="${sig[e.ticker].level === 'Keep' ? 'good' : sig[e.ticker].level === 'Watch' ? 'mid' : 'bad'}"><b>${ICON[sig[e.ticker].level]} ${esc(sig[e.ticker].level)}</b></td><td>${esc(sig[e.ticker].reasons[0] || '')}</td></tr>`).join('');
+  q('tbl').innerHTML = '<tr><th>Fund</th><th>Signal</th><th>Main reason</th></tr>' + sorted.map(e => `<tr><td><b>${esc(e.ticker)}</b></td><td class="${cls(sig[e.ticker].level)}"><b>${ICON[sig[e.ticker].level]} ${esc(sig[e.ticker].level)}</b></td><td>${esc(sig[e.ticker].reasons[0] || '')}</td></tr>`).join('');
   q('ff').value = funds.some(e => e.ticker === v0) ? v0 : funds[0].ticker;
   const draw = () => {
     const t = q('ff').value, e = ctx.etfs.find(x => x.ticker === t), s = sig[t];
     ctx.store.set('funds:t', t);
     const pc = prosCons({ etf: e, metrics: ctx.metrics[t], dividends: ctx.dividends[t], holdings: ctx.holdings[t] }, ctx.rules);
     q('dh').textContent = `${t}: ${s.level}`;
-    q('dsig').innerHTML = `<div class="${s.level === 'Keep' ? 'good' : s.level === 'Watch' ? 'mid' : 'bad'}"><b>${ICON[s.level]} ${esc(s.level)}</b> – ${esc(s.why)}</div>
+    q('dsig').innerHTML = `<div class="${cls(s.level)}"><b>${ICON[s.level]} ${esc(s.level)}</b> – ${esc(s.why)}</div>
       <ul class="tight">${s.reasons.map(r => `<li>${esc(r)}</li>`).join('')}</ul>
       ${s.dip.hit.length ? `<div class="sub">Buy-the-dip level reached: ${s.dip.hit.map(l => '-' + Math.round(-l * 100) + '%').join(', ')} (see Dips tab).</div>` : ''}
       <div class="sub">Price source: ${trustBadge(ctx.trust[t] && ctx.trust[t].price)}</div>`;
@@ -55,7 +58,7 @@ export function render(el, ctx) {
       q('hw').hidden = false;
       barChart(q('c2'), h.top.map(x => x.name), h.top.map(x => +(x.pct * 100).toFixed(1)), { title: '% of fund', fmt: v => v + '%' });
       q('hs').innerHTML = (h.feeder ? `This fund holds one underlying fund (${esc(h.underlying)}), so the list shows that, not the companies inside. ` : h.incomplete ? 'This list is partial (fund of funds), so concentration is not scored. ' : `Top 10 = ${fmtPct(h.top10_pct, 0)} of the fund. `)
-        + (h.top_sector ? `Biggest sector: ${esc(String(h.top_sector.name).replace(/_/g, ' '))} ${fmtPct(h.top_sector.pct, 0)}. ` : '') + 'Source: ' + trustBadge(h.trust);
+        + (h.top_sector ? `Biggest sector: ${esc(String(h.top_sector.name).replace(/_/g, ' '))} ${fmtPct(h.top_sector.pct, 0)}. ` : '') + (h.as_of ? `As at ${esc(h.as_of)}. ` : '') + 'Source: ' + trustBadge(h.trust);
     } else { q('hw').hidden = true; q('hs').textContent = e.category === 'reference' ? 'A single company, so it is all one holding.' : 'Holdings data not available.'; }
   };
   q('ff').onchange = draw; draw();

@@ -36,3 +36,11 @@ def test_dividend_cut_risk_uses_complete_years_only():
     s = summarize(divs, 100, NOW)                      # 2026 is a partial year: ignored
     assert abs(s["worst_yoy_change"] - (-0.5)) < 1e-9 and s["years_cut"] == 1
     assert summarize([("2025-03-01", 3.3)], 100, NOW)["worst_yoy_change"] is None    # need two complete years
+
+
+def test_cut_stats_use_a_stated_window_and_ignore_rounding_noise():
+    divs = [("1999-03-01", 10.0), ("2000-03-01", 1.0)]                         # ancient crash: outside the 10-year window
+    divs += [("2018-03-01", 3.0), ("2019-03-01", 2.9985), ("2020-03-01", 2.0), ("2021-03-01", 2.5)]
+    s = summarize(divs, 100, NOW)
+    assert s["cut_window_years"] == 10
+    assert s["years_cut"] == 1 and abs(s["worst_yoy_change"] - (2.0 / 2.9985 - 1)) < 1e-9   # 2019's -0.05% is noise, not a cut

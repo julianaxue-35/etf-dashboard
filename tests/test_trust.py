@@ -25,3 +25,11 @@ def test_failed_crosscheck_flagged():
 def test_opinion_capped_at_60():
     assert trust_score(src(type="opinion"), True)["score"] == 60
     assert any("opinion" in x.lower() for x in trust_score(src(type="opinion"), True)["reasons"])
+
+
+def test_cap_reason_only_when_the_cap_actually_applied():
+    low = trust_score(src(type="opinion", scores={"primary": 10, "independent": 10, "transparent": 12, "timely": 10}), None)
+    assert low["score"] == 42 and not any("capped" in r.lower() for r in low["reasons"])
+    assert any("opinion" in r.lower() for r in low["reasons"])
+    high = trust_score(src(type="opinion"), True)
+    assert high["score"] == 60 and any("capped" in r.lower() for r in high["reasons"])

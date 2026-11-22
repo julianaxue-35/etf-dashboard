@@ -26,6 +26,9 @@ def trust_score(source, crosscheck_ok):
     else:
         reasons.append("Not cross-checked against a second source.")
     if source.get("type") == "opinion":
-        total = min(total, 60)
-        reasons.append("Opinion, not data: capped at 60.")
+        if total > 60:
+            total = 60
+            reasons.append("Opinion, not data: capped at 60.")
+        else:
+            reasons.append("Opinion, not data.")
     return {"score": int(total), "reasons": reasons}

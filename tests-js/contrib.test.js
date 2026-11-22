@@ -89,4 +89,13 @@ test('buildSchedule: month-end clamping and validation', () => {
   assert.throws(() => buildSchedule({ amount: 1000, months: 12, start: 'nope' }), /date/i);
   assert.throws(() => buildSchedule({ amount: 1000, months: 12, start: '2026-12-01', brokerage: -1 }), /brokerage/i);
   assert.equal(buildSchedule({ amount: 1000, months: 1, start: '2026-12-01' }).rows.length, 1);
+  assert.throws(() => buildSchedule({ amount: 0.05, months: 12, start: '2026-12-01' }), /too small/i);
+});
+
+import { nextMonthStart } from '../js/contrib.js';
+
+test('nextMonthStart uses the local date, not UTC', () => {
+  assert.equal(nextMonthStart(new Date(2026, 10, 30, 9, 0)), '2026-12-01');     // 30 Nov, morning local time
+  assert.equal(nextMonthStart(new Date(2026, 11, 15, 23, 30)), '2027-01-01');   // year rollover
+  assert.equal(nextMonthStart(new Date(2027, 0, 31, 0, 5)), '2027-02-01');
 });

@@ -40,3 +40,9 @@ def test_loss_probabilities_and_deep_bad_case():
     for h in H:
         assert out[h]["p5"] <= out[h]["p10"] <= out[h]["p50"]
         assert 0.0 <= out[h]["prob_loss"] <= out[h]["prob_below_6"] <= 1.0
+
+
+def test_horizons_longer_than_the_funds_own_history_are_flagged():
+    out = scenario_bands(_series(5 * 252, 0.0004), H, n=100)           # exactly 5 years of data
+    assert out[5]["beyond_history"] is False and out[10]["beyond_history"] is True
+    assert out[1]["beyond_history"] is False

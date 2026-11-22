@@ -118,3 +118,31 @@ def test_market_context_gate():
                    {"title": "AI stocks tumble", "link": "https://a/2", "published": "2026-11-22T06:00:00+00:00"}]}
     items = build_news(raw, SOURCES, rules, ETFS, NOW)["items"]
     assert [i["title"] for i in items] == ["AI stocks tumble"]
+
+
+def test_two_google_searches_for_the_same_story_do_not_count_as_two_sources():
+    g = {k: {"type": "aggregator", "name": k, "scores": {"primary": 8, "independent": 10, "transparent": 8, "timely": 14}, "reasons": {}} for k in ("google_market", "google_ai")}
+    story = "ASX tumbles as Wall Street slides"
+    raw = {"google_market": [{"title": f"{story} - Australian Financial Review", "link": "https://g/1", "published": "2026-11-22T06:00:00+00:00"}],
+           "google_ai": [{"title": f"{story} - Australian Financial Review", "link": "https://g/2", "published": "2026-11-22T05:00:00+00:00"}]}
+    it = build_news(raw, g, RULES, ETFS, NOW)["items"]
+    assert len(it) == 1 and it[0]["reported_by"] == 1                      # same outlet via two searches = one source
+    raw2 = {"google_market": [{"title": f"{story} - Australian Financial Review", "link": "https://g/1", "published": "2026-11-22T06:00:00+00:00"}],
+            "google_ai": [{"title": f"{story} - Reuters", "link": "https://g/2", "published": "2026-11-22T05:00:00+00:00"}]}
+    it2 = build_news(raw2, g, RULES, ETFS, NOW)["items"]
+    assert len(it2) == 1 and it2[0]["reported_by"] == 2                    # two different outlets = genuine cross-check
+
+
+def test_outlet_suffix_does_not_merge_different_stories():
+    g = {"google_asx": {"type": "aggregator", "name": "g", "scores": {"primary": 8, "independent": 10, "transparent": 8, "timely": 14}, "reasons": {}}}
+    raw = {"google_asx": [{"title": "ASX tumbles on bank earnings - Australian Financial Review", "link": "https://g/1", "published": "2026-11-22T06:00:00+00:00"},
+                          {"title": "ASX shares tumble as miners slide on China - Australian Financial Review", "link": "https://g/2", "published": "2026-11-22T05:00:00+00:00"}]}
+    assert len(build_news(raw, g, RULES, ETFS, NOW)["items"]) == 2
+
+
+def test_truncated_feed_is_reported_as_failed_not_empty_success(tmp_path):
+    from etf.news import refresh, MAX_BYTES
+    feeds = [{"id": "abc", "url": "u1"}, {"id": "cnbc", "url": "u2"}]
+    rss = b"<rss><channel><item><title>ASX tumbles on rate fears</title><link>https://x.com/1</link><pubDate>Sun, 22 Nov 2026 06:00:00 +0000</pubDate></item></channel></rss>"
+    n = refresh(tmp_path / "n.json", feeds, SOURCES, RULES, ETFS, NOW, get=lambda u: rss if u == "u1" else b"<rss>" + b"x" * MAX_BYTES)
+    assert n["failed"] == ["cnbc"]

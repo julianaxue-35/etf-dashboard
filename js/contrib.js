@@ -63,6 +63,7 @@ export function buildSchedule({ amount, months = 12, start, brokerage = 0 }) {
   if (!m) throw new Error('Start date must look like 2026-12-01.');
   const [y0, mo0, d0] = [+m[1], +m[2] - 1, +m[3]];
   const each = Math.floor((amount / months) * 100) / 100;
+  if (each < 0.01) throw new Error('Amount is too small to split into that many buys.');
   const rows = []; let cum = 0;
   for (let k = 0; k < months; k++) {
     const buy = k === months - 1 ? Math.round((amount - each * (months - 1)) * 100) / 100 : each;
@@ -74,4 +75,10 @@ export function buildSchedule({ amount, months = 12, start, brokerage = 0 }) {
   }
   const totalBrokerage = brokerage * months;
   return { rows, totalBrokerage, brokeragePct: totalBrokerage / amount };
+}
+
+// First day of next month in LOCAL time (toISOString would shift it by the UTC offset).
+export function nextMonthStart(now = new Date()) {
+  const y = now.getFullYear() + (now.getMonth() === 11 ? 1 : 0), m = (now.getMonth() + 1) % 12;
+  return `${y}-${String(m + 1).padStart(2, '0')}-01`;
 }
