@@ -4,11 +4,26 @@
  "checked": "2026-11-22",
  "confirm_with_accountant": true,
  "brackets": [
-  {"upTo": 18200, "rate": 0.0},
-  {"upTo": 45000, "rate": 0.15},
-  {"upTo": 135000, "rate": 0.30},
-  {"upTo": 190000, "rate": 0.37},
-  {"upTo": null, "rate": 0.45}
+  {
+   "upTo": 18200,
+   "rate": 0.0
+  },
+  {
+   "upTo": 45000,
+   "rate": 0.15
+  },
+  {
+   "upTo": 135000,
+   "rate": 0.3
+  },
+  {
+   "upTo": 190000,
+   "rate": 0.37
+  },
+  {
+   "upTo": null,
+   "rate": 0.45
+  }
  ],
  "medicare": 0.02,
  "cgt_discount": 0.5,
@@ -20,5 +35,9 @@
  },
  "super_contrib_tax": 0.15,
  "super_earnings_tax": 0.15,
- "super_earnings_tax_after_60_pension": 0.0
+ "super_earnings_tax_after_60_pension": 0.0,
+ "medicare_low_threshold": 28011,
+ "medicare_full_threshold": 35013,
+ "medicare_threshold_note": "Single-person thresholds shown on the ATO myTax 2026 page; the 2026-27 amounts may differ slightly.",
+ "cpi_default": 0.025
 }

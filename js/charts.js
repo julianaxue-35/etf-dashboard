@@ -66,3 +66,12 @@ export function scatterChart(canvas, points, groups, bands) {
       backgroundColor: pal[i % pal.length], pointRadius: 6, pointStyle: ['circle', 'rect', 'triangle', 'rectRot', 'rectRounded'][i % 5] })) },
     options: opts });
 }
+
+// datasets: [{label, data:[...], color?}] across category labels
+export function groupedBar(canvas, labels, datasets, { title, fmt = v => v } = {}) {
+  const { opts } = base(); const pal = palette();
+  opts.scales.y.title = { display: !!title, text: title, color: opts.scales.y.ticks.color };
+  opts.scales.y.ticks.callback = v => fmt(v);
+  opts.plugins.tooltip = { callbacks: { label: c => `${c.dataset.label}: ${fmt(c.parsed.y)}` } };
+  return mount(canvas, { type: 'bar', data: { labels, datasets: datasets.map((d, i) => ({ label: d.label, data: d.data, backgroundColor: d.color || pal[i % pal.length] })) }, options: opts });
+}

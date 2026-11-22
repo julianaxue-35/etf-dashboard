@@ -54,6 +54,10 @@ def run(provider, etfs, out_dir, now, sources=None, second_price=None):
     if sources is None:
         sources = _load(ROOT / "config/sources.json")
     trust = _load(out / "trust.json")
+    if "ato" in sources:
+        # Tax rates were confirmed on two ATO pages that agree (rates page + tax-cut page) -> cross-checked.
+        at = trust_score(sources["ato"], True)
+        trust["_ato"] = {"source": sources["ato"].get("name", "ATO"), "score": at["score"], "reasons": at["reasons"]}
     failed, raw = [], {}
     for etf in etfs:
         t = etf["ticker"]

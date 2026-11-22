@@ -77,3 +77,9 @@ def test_price_mismatch_flagged(tmp_path):
     t = json.loads((tmp_path / "trust.json").read_text())["AAA"]
     assert t["price"]["crosscheck"] is False
     assert any("differs" in r for r in t["price"]["reasons"]) and t["facts"] is None
+
+def test_ato_trust_entry_written(tmp_path):
+    etfs = [{"ticker": "AAA", "category": "core", "fee_pct": 0.1, "fee_check": "n/a"}]
+    fetch.run(FakeProvider({"AAA": series()}), etfs, tmp_path, NOW)
+    t = json.loads((tmp_path / "trust.json").read_text())["_ato"]
+    assert t["score"] == 98 and any("capital gains" in r for r in t["reasons"])
