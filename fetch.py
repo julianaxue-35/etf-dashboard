@@ -5,6 +5,8 @@ import json, pathlib, sys
 from etf import metrics as M
 from etf.scenarios import scenario_bands
 from etf.provider import YahooProvider, ProviderError
+from etf.trust import trust_score
+from etf.crosscheck import crosscheck, asx_last_price
 
 ROOT = pathlib.Path(__file__).resolve().parent
 HORIZONS = [0.5, 1, 3, 5, 10]
@@ -45,10 +47,13 @@ def _entry(etf, dates, closes):
     return metrics, scen, price
 
 
-def run(provider, etfs, out_dir, now):
+def run(provider, etfs, out_dir, now, sources=None, second_price=None):
     out = pathlib.Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
     prices, metrics, scen = (_load(out / f"{n}.json") for n in ("prices", "metrics", "scenarios"))
+    if sources is None:
+        sources = _load(ROOT / "config/sources.json")
+    trust = _load(out / "trust.json")
     failed, raw = [], {}
     for etf in etfs:
         t = etf["ticker"]
@@ -57,10 +62,26 @@ def run(provider, etfs, out_dir, now):
             m, s, p = _entry(etf, dates, closes)
             metrics[t], scen[t], prices[t] = m, s, p
             raw[t] = (dates, closes)
+            cc = crosscheck(t, closes[-1], second_price(t) if second_price else None)
+            psrc = sources["yahoo"]
+            pt = trust_score(psrc, cc["ok"])
+            if cc["ok"] is False:
+                pt["reasons"].append(f"Price differs from the ASX figure by {cc['gap']*100:.1f}%.")
+            fc = etf.get("fee_check", "n/a")
+            fsrc = {"issuer_page": "issuer", "issuer_page_via_search": "issuer_search"}.get(fc)
+            facts = None
+            if fsrc:
+                ft = trust_score(sources[fsrc], None)
+                facts = {"source": sources[fsrc].get("name", fsrc), "score": ft["score"],
+                         "reasons": ft["reasons"], "url": etf.get("fee_url", "")}
+            trust[t] = {"price": {"source": psrc.get("name", "yahoo"), "score": pt["score"],
+                                  "reasons": pt["reasons"], "crosscheck": cc["ok"], "gap": cc["gap"],
+                                  "checked_against": "ASX website data service" if cc["ok"] is not None else None},
+                        "facts": facts}
         except (ProviderError, KeyError, ValueError):
             failed.append(t)
     if len(failed) < len(etfs):
-        for n, v in (("prices", prices), ("metrics", metrics), ("scenarios", scen)):
+        for n, v in (("prices", prices), ("metrics", metrics), ("scenarios", scen), ("trust", trust)):
             (out / f"{n}.json").write_text(json.dumps(v, separators=(",", ":")))
     meta = _load(out / "meta.json")
     meta_new = {"updated_utc": now.isoformat() if len(failed) < len(etfs) else meta.get("updated_utc"),
@@ -72,4 +93,4 @@ def run(provider, etfs, out_dir, now):
 if __name__ == "__main__":
     import datetime as dt
     etfs = json.loads((ROOT / "config/etfs.json").read_text())
-    run(YahooProvider(), etfs, ROOT / "data", dt.datetime.utcnow())
+    run(YahooProvider(), etfs, ROOT / "data", dt.datetime.utcnow(), second_price=asx_last_price)

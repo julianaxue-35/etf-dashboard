@@ -1,19 +1,168 @@
 [
- {"ticker":"A200","name":"BetaShares Australia 200 ETF","category":"core","fee_pct":0.04,"fee_verified":false,"notes":"ASX 200, franked dividends"},
- {"ticker":"VAS","name":"Vanguard Australian Shares Index ETF","category":"core","fee_pct":0.07,"fee_verified":false,"notes":"ASX 300"},
- {"ticker":"VGS","name":"Vanguard MSCI Index International Shares ETF","category":"core","fee_pct":0.18,"fee_verified":false,"notes":"Developed markets ex-Australia, unhedged"},
- {"ticker":"VDHG","name":"Vanguard Diversified High Growth Index ETF","category":"core","fee_pct":0.27,"fee_verified":false,"notes":"90/10 growth/defensive, one-fund portfolio"},
- {"ticker":"IVV","name":"iShares S&P 500 ETF","category":"core","fee_pct":0.04,"fee_verified":false,"notes":"US large caps"},
- {"ticker":"NDQ","name":"BetaShares NASDAQ 100 ETF","category":"tech","fee_pct":0.48,"fee_verified":false,"notes":"US tech/AI heavy, concentrated in mega-caps"},
- {"ticker":"SEMI","name":"Global X Semiconductor ETF","category":"tech","fee_pct":0.57,"fee_verified":false,"notes":"AI chip exposure, high volatility"},
- {"ticker":"RBTZ","name":"BetaShares Global Robotics and Artificial Intelligence ETF","category":"tech","fee_pct":0.57,"fee_verified":false,"notes":"AI/robotics theme"},
- {"ticker":"TECH","name":"Global X Morningstar Global Technology ETF","category":"tech","fee_pct":0.45,"fee_verified":false,"notes":"Global technology"},
- {"ticker":"IXJ","name":"iShares Global Healthcare ETF (AU)","category":"healthcare","fee_pct":0.40,"fee_verified":false,"notes":"Global healthcare, unhedged"},
- {"ticker":"HLTH","name":"VanEck Global Healthcare Leaders ETF","category":"healthcare","fee_pct":0.45,"fee_verified":false,"notes":"Global healthcare leaders"},
- {"ticker":"IFRA","name":"VanEck FTSE Global Infrastructure (AUD Hedged) ETF","category":"infrastructure","fee_pct":0.20,"fee_verified":false,"notes":"Listed global infrastructure, hedged"},
- {"ticker":"GLIN","name":"iShares Core FTSE Global Infrastructure (AUD Hedged) ETF","category":"infrastructure","fee_pct":0.20,"fee_verified":false,"notes":"Listed since May 2023, under 3 years of history"},
- {"ticker":"CSL","name":"CSL Limited","category":"reference","fee_pct":0.0,"fee_verified":true,"notes":"Single stock, reference only (held inside A200, VAS, healthcare ETFs)"},
- {"ticker":"TCL","name":"Transurban Group","category":"reference","fee_pct":0.0,"fee_verified":true,"notes":"Single stock, infrastructure reference"},
- {"ticker":"APA","name":"APA Group","category":"reference","fee_pct":0.0,"fee_verified":true,"notes":"Single stock, infrastructure reference"},
- {"ticker":"MQG","name":"Macquarie Group Limited","category":"reference","fee_pct":0.0,"fee_verified":true,"notes":"Single stock, infrastructure reference"}
+ {
+  "ticker": "A200",
+  "name": "BetaShares Australia 200 ETF",
+  "category": "core",
+  "fee_pct": 0.04,
+  "fee_verified": true,
+  "notes": "ASX 200, franked dividends",
+  "fee_check": "issuer_page",
+  "fee_url": "https://www.betashares.com.au/fund/betashares-australia-200-etf/"
+ },
+ {
+  "ticker": "VAS",
+  "name": "Vanguard Australian Shares Index ETF",
+  "category": "core",
+  "fee_pct": 0.07,
+  "fee_verified": true,
+  "notes": "ASX 300",
+  "fee_check": "issuer_page_via_search",
+  "fee_url": "https://www.vanguard.com.au/adviser/invest/etf?portId=8205"
+ },
+ {
+  "ticker": "VGS",
+  "name": "Vanguard MSCI Index International Shares ETF",
+  "category": "core",
+  "fee_pct": 0.18,
+  "fee_verified": true,
+  "notes": "Developed markets ex-Australia, unhedged",
+  "fee_check": "issuer_page_via_search",
+  "fee_url": "https://www.vanguard.com.au/adviser/invest/etf?portId=8212"
+ },
+ {
+  "ticker": "VDHG",
+  "name": "Vanguard Diversified High Growth Index ETF",
+  "category": "core",
+  "fee_pct": 0.27,
+  "fee_verified": true,
+  "notes": "90/10 growth/defensive, one-fund portfolio",
+  "fee_check": "issuer_page_via_search",
+  "fee_url": "https://www.vanguard.com.au/personal/invest-with-us/etf?portId=8221"
+ },
+ {
+  "ticker": "IVV",
+  "name": "iShares S&P 500 ETF",
+  "category": "core",
+  "fee_pct": 0.04,
+  "fee_verified": true,
+  "notes": "US large caps",
+  "fee_check": "issuer_page_via_search",
+  "fee_url": "https://www.blackrock.com/au/products/275304/"
+ },
+ {
+  "ticker": "NDQ",
+  "name": "BetaShares NASDAQ 100 ETF",
+  "category": "tech",
+  "fee_pct": 0.48,
+  "fee_verified": true,
+  "notes": "US tech/AI heavy, concentrated in mega-caps",
+  "fee_check": "issuer_page",
+  "fee_url": "https://www.betashares.com.au/fund/nasdaq-100-etf/"
+ },
+ {
+  "ticker": "SEMI",
+  "name": "Global X Semiconductor ETF",
+  "category": "tech",
+  "fee_pct": 0.45,
+  "fee_verified": true,
+  "notes": "AI chip exposure, high volatility",
+  "fee_check": "issuer_page",
+  "fee_url": "https://www.globalxetfs.com.au/funds/semi/"
+ },
+ {
+  "ticker": "RBTZ",
+  "name": "BetaShares Global Robotics and Artificial Intelligence ETF",
+  "category": "tech",
+  "fee_pct": 0.57,
+  "fee_verified": true,
+  "notes": "AI/robotics theme",
+  "fee_check": "issuer_page",
+  "fee_url": "https://www.betashares.com.au/fund/global-robotics-and-artificial-intelligence-etf/"
+ },
+ {
+  "ticker": "TECH",
+  "name": "Global X Morningstar Global Technology ETF",
+  "category": "tech",
+  "fee_pct": 0.45,
+  "fee_verified": true,
+  "notes": "Global technology",
+  "fee_check": "issuer_page",
+  "fee_url": "https://www.globalxetfs.com.au/funds/tech/"
+ },
+ {
+  "ticker": "IXJ",
+  "name": "iShares Global Healthcare ETF (AU)",
+  "category": "healthcare",
+  "fee_pct": 0.41,
+  "fee_verified": true,
+  "notes": "Global healthcare, unhedged",
+  "fee_check": "issuer_page_via_search",
+  "fee_url": "https://blackrock.com/au/individual/products/273430"
+ },
+ {
+  "ticker": "HLTH",
+  "name": "VanEck Global Healthcare Leaders ETF",
+  "category": "healthcare",
+  "fee_pct": 0.45,
+  "fee_verified": true,
+  "notes": "Global healthcare leaders",
+  "fee_check": "issuer_page",
+  "fee_url": "https://www.vaneck.com.au/etf/equity/hlth/snapshot/"
+ },
+ {
+  "ticker": "IFRA",
+  "name": "VanEck FTSE Global Infrastructure (AUD Hedged) ETF",
+  "category": "infrastructure",
+  "fee_pct": 0.2,
+  "fee_verified": true,
+  "notes": "Listed global infrastructure, hedged",
+  "fee_check": "issuer_page",
+  "fee_url": "https://www.vaneck.com.au/etf/equity/ifra/snapshot/"
+ },
+ {
+  "ticker": "GLIN",
+  "name": "iShares Core FTSE Global Infrastructure (AUD Hedged) ETF",
+  "category": "infrastructure",
+  "fee_pct": 0.15,
+  "fee_verified": true,
+  "notes": "Listed since May 2023, under 3 years of history",
+  "fee_check": "issuer_page_via_search",
+  "fee_url": "https://www.blackrock.com/au/products/331650/"
+ },
+ {
+  "ticker": "CSL",
+  "name": "CSL Limited",
+  "category": "reference",
+  "fee_pct": 0.0,
+  "fee_verified": true,
+  "notes": "Single stock, reference only (held inside A200, VAS, healthcare ETFs)",
+  "fee_check": "n/a"
+ },
+ {
+  "ticker": "TCL",
+  "name": "Transurban Group",
+  "category": "reference",
+  "fee_pct": 0.0,
+  "fee_verified": true,
+  "notes": "Single stock, infrastructure reference",
+  "fee_check": "n/a"
+ },
+ {
+  "ticker": "APA",
+  "name": "APA Group",
+  "category": "reference",
+  "fee_pct": 0.0,
+  "fee_verified": true,
+  "notes": "Single stock, infrastructure reference",
+  "fee_check": "n/a"
+ },
+ {
+  "ticker": "MQG",
+  "name": "Macquarie Group Limited",
+  "category": "reference",
+  "fee_pct": 0.0,
+  "fee_verified": true,
+  "notes": "Single stock, infrastructure reference",
+  "fee_check": "n/a"
+ }
 ]
